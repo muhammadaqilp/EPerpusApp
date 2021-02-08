@@ -22,5 +22,10 @@
         android:name="com.example.eperpusapp.Fragment.HistoryFragment"
         android:label="@string/title_history"
         tools:layout="@layout/fragment_history" />
+    <activity
+        android:id="@+id/bookDetailActivity"
+        android:name="com.example.eperpusapp.BookDetailActivity"
+        android:label="activity_book_detail"
+        tools:layout="@layout/activity_book_detail" />
 
 </navigation>
