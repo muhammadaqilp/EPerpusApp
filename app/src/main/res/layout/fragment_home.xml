@@ -27,13 +27,12 @@
             android:layout_marginRight="16dp"
             android:src="@android:color/darker_gray" />
 
-        <EditText
+        <androidx.appcompat.widget.SearchView
             style="@style/SearchContent"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/profile_image"
             android:background="@drawable/rectangle_2"
-            android:padding="8dp"
-            app:actionViewClass="androidx.appcompat.widget.SearchView" />
+            app:queryHint="Search for a book?"/>
     </RelativeLayout>
 
     <ImageView
@@ -177,6 +176,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:padding="8dp"
         android:layout_margin="8dp"
         tools:listitem="@layout/item_collection_book" />
