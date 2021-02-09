@@ -164,7 +164,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
-                    android:text="Jurusan"
+                    android:text="Major"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -174,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Teknik Informatika"
+                    android:text="Informatics Engineering"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -200,7 +200,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
-                    android:text="Fakultas"
+                    android:text="Faculty"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -210,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Sains dan Teknologi"
+                    android:text="Science and Technology"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -235,7 +235,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Daftar Bacaan"
+                    android:text="Reading Wishlist"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
