@@ -11,13 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.example.eperpusapp.BookDetailActivity;
 import com.example.eperpusapp.ProfileActivity;
 import com.example.eperpusapp.R;
 
 public class HomeFragment extends Fragment {
 
-    ImageView imageView;
+    ImageView imageViewProfile, imageViewBook;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,9 +32,15 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        imageView = view.findViewById(R.id.profile_image);
-        imageView.setOnClickListener(v -> {
+        imageViewProfile = view.findViewById(R.id.profile_image);
+        imageViewBook = view.findViewById(R.id.img_item_book);
+        imageViewProfile.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), ProfileActivity.class);
+            startActivity(intent);
+        });
+
+        imageViewBook.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), BookDetailActivity.class);
             startActivity(intent);
         });
         
