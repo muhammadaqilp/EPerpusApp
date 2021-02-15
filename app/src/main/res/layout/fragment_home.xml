@@ -39,9 +39,14 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -186,41 +191,16 @@
                 android:textColor="@color/black"
                 android:textSize="22sp" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <include layout="@layout/item_collection_book" />
-
-                <include layout="@layout/item_collection_book" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <include layout="@layout/item_collection_book" />
-
-                <include layout="@layout/item_collection_book" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="64dp"
-                android:orientation="horizontal">
-
-                <include layout="@layout/item_collection_book" />
-
-                <include layout="@layout/item_collection_book" />
-
-            </LinearLayout>
+                android:id="@+id/rv_collection"
+                tools:listitem="@layout/item_collection_book"/>
 
         </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
     </ScrollView>
+
 
 </RelativeLayout>
