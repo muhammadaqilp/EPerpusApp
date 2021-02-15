@@ -58,7 +58,8 @@
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:max="100"
             android:progress="50"
-            android:progressTint="#C45C5C"/>
+            android:progressTint="@color/c10"
+            android:progressBackgroundTint="@color/c8"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

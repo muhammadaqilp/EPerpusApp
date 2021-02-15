@@ -15,6 +15,7 @@
         android:background="?android:attr/windowBackground"
         android:layout_alignParentBottom="true"
         app:labelVisibilityMode="selected"
+        app:itemIconTint="@color/selector"
         app:menu="@menu/bottom_nav_menu" />
 
     <fragment

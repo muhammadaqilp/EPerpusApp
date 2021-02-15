@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.EPerpusApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#C4C4C4</item>
-        <item name="colorPrimaryVariant">#C4C4C4</item>
+        <item name="colorPrimary">@color/c8</item>
+        <item name="colorPrimaryVariant">@color/c8</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -33,12 +33,13 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginRight">16dp</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/abu</item>
     </style>
     <style name="TextSpec.Value">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/c9</item>
     </style>
 
     <style name="TextContent">

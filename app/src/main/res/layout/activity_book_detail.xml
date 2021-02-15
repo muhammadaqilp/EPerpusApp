@@ -124,7 +124,7 @@
                     android:fontFamily="@font/roboto"
                     android:gravity="left"
                     android:text="Detail"
-                    android:textColor="@color/black"
+                    android:textColor="@color/c8"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -216,7 +216,7 @@
                     android:fontFamily="@font/roboto"
                     android:gravity="left"
                     android:text="Summary"
-                    android:textColor="@color/black"
+                    android:textColor="@color/c8"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 

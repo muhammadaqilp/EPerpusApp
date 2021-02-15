@@ -24,8 +24,7 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:maxLines="4"
-        android:ellipsize="end"
-        android:textStyle="bold" />
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/bookAuthors"
@@ -34,7 +33,7 @@
         android:text="Book Authors"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textColor="@color/black"
+        android:textColor="@color/c8"
         android:textSize="18sp" />
 
     <TextView

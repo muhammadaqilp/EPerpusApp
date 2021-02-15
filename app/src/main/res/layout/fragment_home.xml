@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/c1"
     tools:context=".Fragment.HomeFragment">
 
     <LinearLayout
+        android:background="@color/c8"
         android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
