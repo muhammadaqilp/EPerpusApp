@@ -1,6 +1,7 @@
 package com.example.eperpusapp.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.eperpusapp.BookDetailActivity;
 import com.example.eperpusapp.Model.DataItem;
 import com.example.eperpusapp.R;
 
@@ -45,6 +47,12 @@ public class CollectionBookAdapter extends RecyclerView.Adapter<CollectionBookAd
         int a = dataItem.getJumlahCopy();
         int b = dataItem.getTotalDipinjam();
         holder.tvAvailability.setText("Tersedia "+(a-b)+" / "+a);
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intentDetail = new Intent(mContext, BookDetailActivity.class);
+            intentDetail.putExtra(BookDetailActivity.EXTRA_BOOK_DETAIL, dataItem);
+            mContext.startActivity(intentDetail);
+        });
     }
 
     @Override

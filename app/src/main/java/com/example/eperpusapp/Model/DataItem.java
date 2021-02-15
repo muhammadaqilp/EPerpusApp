@@ -1,97 +1,150 @@
 package com.example.eperpusapp.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class DataItem{
+public class DataItem implements Parcelable {
 
-	@SerializedName("jumlah_copy")
-	private int jumlahCopy;
+    @SerializedName("jumlah_copy")
+    private int jumlahCopy;
 
-	@SerializedName("file_buku")
-	private String fileBuku;
+    @SerializedName("file_buku")
+    private String fileBuku;
 
-	@SerializedName("idbuku")
-	private int idbuku;
+    @SerializedName("idbuku")
+    private int idbuku;
 
-	@SerializedName("isbn")
-	private String isbn;
+    @SerializedName("isbn")
+    private String isbn;
 
-	@SerializedName("jumlah_halaman")
-	private int jumlahHalaman;
+    @SerializedName("jumlah_halaman")
+    private int jumlahHalaman;
 
-	@SerializedName("kategori")
-	private String kategori;
+    @SerializedName("kategori")
+    private String kategori;
 
-	@SerializedName("foto_buku")
-	private String fotoBuku;
+    @SerializedName("foto_buku")
+    private String fotoBuku;
 
-	@SerializedName("penerbit")
-	private String penerbit;
+    @SerializedName("penerbit")
+    private String penerbit;
 
-	@SerializedName("total_dipinjam")
-	private int totalDipinjam;
+    @SerializedName("total_dipinjam")
+    private int totalDipinjam;
 
-	@SerializedName("tahun_terbit")
-	private int tahunTerbit;
+    @SerializedName("tahun_terbit")
+    private int tahunTerbit;
 
-	@SerializedName("judul_buku")
-	private String judulBuku;
+    @SerializedName("judul_buku")
+    private String judulBuku;
 
-	@SerializedName("pengarang")
-	private String pengarang;
+    @SerializedName("pengarang")
+    private String pengarang;
 
-	@SerializedName("sinopsis")
-	private String sinopsis;
+    @SerializedName("sinopsis")
+    private String sinopsis;
 
-	public int getJumlahCopy(){
-		return jumlahCopy;
-	}
+    protected DataItem(Parcel in) {
+        jumlahCopy = in.readInt();
+        fileBuku = in.readString();
+        idbuku = in.readInt();
+        isbn = in.readString();
+        jumlahHalaman = in.readInt();
+        kategori = in.readString();
+        fotoBuku = in.readString();
+        penerbit = in.readString();
+        totalDipinjam = in.readInt();
+        tahunTerbit = in.readInt();
+        judulBuku = in.readString();
+        pengarang = in.readString();
+        sinopsis = in.readString();
+    }
 
-	public String getFileBuku(){
-		return fileBuku;
-	}
+    public static final Creator<DataItem> CREATOR = new Creator<DataItem>() {
+        @Override
+        public DataItem createFromParcel(Parcel in) {
+            return new DataItem(in);
+        }
 
-	public int getIdbuku(){
-		return idbuku;
-	}
+        @Override
+        public DataItem[] newArray(int size) {
+            return new DataItem[size];
+        }
+    };
 
-	public String getIsbn(){
-		return isbn;
-	}
+    public int getJumlahCopy() {
+        return jumlahCopy;
+    }
 
-	public int getJumlahHalaman(){
-		return jumlahHalaman;
-	}
+    public String getFileBuku() {
+        return fileBuku;
+    }
 
-	public String getKategori(){
-		return kategori;
-	}
+    public int getIdbuku() {
+        return idbuku;
+    }
 
-	public String getFotoBuku(){
-		return fotoBuku;
-	}
+    public String getIsbn() {
+        return isbn;
+    }
 
-	public String getPenerbit(){
-		return penerbit;
-	}
+    public int getJumlahHalaman() {
+        return jumlahHalaman;
+    }
 
-	public int getTotalDipinjam(){
-		return totalDipinjam;
-	}
+    public String getKategori() {
+        return kategori;
+    }
 
-	public int getTahunTerbit(){
-		return tahunTerbit;
-	}
+    public String getFotoBuku() {
+        return fotoBuku;
+    }
 
-	public String getJudulBuku(){
-		return judulBuku;
-	}
+    public String getPenerbit() {
+        return penerbit;
+    }
 
-	public String getPengarang(){
-		return pengarang;
-	}
+    public int getTotalDipinjam() {
+        return totalDipinjam;
+    }
 
-	public String getSinopsis(){
-		return sinopsis;
-	}
+    public int getTahunTerbit() {
+        return tahunTerbit;
+    }
+
+    public String getJudulBuku() {
+        return judulBuku;
+    }
+
+    public String getPengarang() {
+        return pengarang;
+    }
+
+    public String getSinopsis() {
+        return sinopsis;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(jumlahCopy);
+        dest.writeString(fileBuku);
+        dest.writeInt(idbuku);
+        dest.writeString(isbn);
+        dest.writeInt(jumlahHalaman);
+        dest.writeString(kategori);
+        dest.writeString(fotoBuku);
+        dest.writeString(penerbit);
+        dest.writeInt(totalDipinjam);
+        dest.writeInt(tahunTerbit);
+        dest.writeString(judulBuku);
+        dest.writeString(pengarang);
+        dest.writeString(sinopsis);
+    }
 }

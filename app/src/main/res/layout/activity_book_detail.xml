@@ -93,6 +93,7 @@
                 app:layout_anchorGravity="top|center">
 
                 <TextView
+                    android:id="@+id/bookTitleDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
@@ -103,6 +104,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/bookAuthorsDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_thin"
@@ -146,6 +148,7 @@
                             android:text="ISBN" />
 
                         <TextView
+                            android:id="@+id/isbnDetail"
                             style="@style/TextSpec.Value"
                             android:text="xxxx-xxxxx-xxxxx" />
 
@@ -161,6 +164,7 @@
                             android:text="Publisher" />
 
                         <TextView
+                            android:id="@+id/publisherDetail"
                             style="@style/TextSpec.Value"
                             android:text="Gramedia" />
                     </TableRow>
@@ -175,8 +179,9 @@
                             android:text="Published Year" />
 
                         <TextView
+                            android:id="@+id/publishedYear"
                             style="@style/TextSpec.Value"
-                            android:text="2017" />
+                            android:text="xxx" />
                     </TableRow>
 
                     <TableRow
@@ -189,8 +194,9 @@
                             android:text="Total Pages" />
 
                         <TextView
+                            android:id="@+id/total_pages"
                             style="@style/TextSpec.Value"
-                            android:text="316" />
+                            android:text="000" />
                     </TableRow>
 
                     <TableRow
@@ -203,6 +209,7 @@
                             android:text="Category" />
 
                         <TextView
+                            android:id="@+id/bookCategory"
                             style="@style/TextSpec.Value"
                             android:text="Computer, Informatics" />
                     </TableRow>
