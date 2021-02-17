@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/c1"
     tools:context=".BookDetailActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -111,7 +112,7 @@
                     android:gravity="center_horizontal"
                     android:text="Author Name"
                     android:textColor="@color/black"
-                    android:textSize="22sp" />
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -234,36 +235,85 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="16dp"
+                    android:layout_marginBottom="24dp"
                     android:text="@string/lorem"
                     android:textColor="@color/black" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#C4C4C4"
-        android:gravity="center"
+        android:background="@color/c4"
+        android:padding="8dp"
         android:orientation="horizontal">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:text="Belum Punya Akun?"
-            android:textColor="#343F4B"
-            android:textSize="18sp" />
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="48dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/daftarsekarang"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Availability"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/jumlahAvail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="1/1 Copy"
+                android:layout_gravity="center"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="48dp"
+            android:background="#E5E5E5"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:fontFamily="@font/roboto"
-            android:text="Daftar Sekarang"
-            android:textColor="#273EA5"
-            android:textSize="18sp" />
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnBorrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:background="@drawable/rectangle_btn3"
+                android:text="Borrow"
+                android:visibility="visible"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btnBorrow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:background="@drawable/rectangle_btn3"
+                android:text="READ"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
 </RelativeLayout>

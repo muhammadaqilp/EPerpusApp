@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:background="@color/c1"
     tools:context=".ProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -57,29 +59,31 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/txtNama"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/roboto"
-                            android:text="Muhammad Aqil Pratama"
+                            android:text="---"
                             android:textColor="@color/black"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/txtNim"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/roboto_thin"
-                            android:text="11180910000117"
+                            android:text="888"
                             android:textColor="@color/black"
                             android:textSize="22sp" />
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_margin="24dp"
-                            android:background="#696969" />
+                            android:layout_height="2dp"
+                            android:layout_margin="20dp"
+                            android:background="@color/c1" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -103,10 +107,11 @@
                                     android:textSize="16sp" />
 
                                 <TextView
+                                    android:id="@+id/txtAngkatan"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto"
-                                    android:text="2018"
+                                    android:text="0000"
                                     android:textColor="@color/black"
                                     android:textSize="20sp" />
                             </LinearLayout>
@@ -128,10 +133,11 @@
                                     android:textSize="16sp" />
 
                                 <TextView
+                                    android:id="@+id/txtStatus"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto"
-                                    android:text="AKTIF"
+                                    android:text="XXXXX"
                                     android:textColor="@color/black"
                                     android:textSize="20sp" />
                             </LinearLayout>
@@ -165,16 +171,17 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
                     android:text="Major"
-                    android:textColor="@color/black"
+                    android:textColor="@color/c8"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtProdi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Informatics Engineering"
+                    android:text="XXXX XXXX"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -201,16 +208,17 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
                     android:text="Faculty"
-                    android:textColor="@color/black"
+                    android:textColor="@color/c8"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtFakultas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto"
-                    android:text="Science and Technology"
+                    android:text="XXXX XX XXXX"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -236,7 +244,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto"
                     android:text="Reading Wishlist"
-                    android:textColor="@color/black"
+                    android:textColor="@color/c8"
                     android:textSize="20sp" />
 
                 <HorizontalScrollView
@@ -269,8 +277,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_margin="16dp"
                 android:background="@drawable/rectangle_btn"
-                android:text="KELUAR"
-                android:textColor="@color/black" />
+                android:text="LOGOUT"
+                android:textColor="@color/c1" />
 
         </RelativeLayout>
 

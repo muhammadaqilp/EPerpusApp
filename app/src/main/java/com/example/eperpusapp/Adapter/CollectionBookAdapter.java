@@ -2,6 +2,8 @@ package com.example.eperpusapp.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eperpusapp.BookDetailActivity;
-import com.example.eperpusapp.Model.DataItem;
+import com.example.eperpusapp.Model.DataItemBuku;
 import com.example.eperpusapp.R;
 
-import org.w3c.dom.Text;
-
+import java.io.File;
 import java.util.List;
 
 public class CollectionBookAdapter extends RecyclerView.Adapter<CollectionBookAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<DataItem> dataItems;
+    private List<DataItemBuku> dataItems;
 
-    public CollectionBookAdapter(List<DataItem> dataItems) {
+    public CollectionBookAdapter(List<DataItemBuku> dataItems) {
         this.dataItems = dataItems;
     }
 
@@ -39,14 +40,20 @@ public class CollectionBookAdapter extends RecyclerView.Adapter<CollectionBookAd
     public void onBindViewHolder(@NonNull CollectionBookAdapter.ViewHolder holder, int position) {
         mContext = holder.itemView.getContext();
 
-        final DataItem dataItem = dataItems.get(position);
+        final DataItemBuku dataItem = dataItems.get(position);
+
+        File imgFile = new File("D:/Pycharm Project/formInputEperpus/Cover/cover.PNG");
+        if (imgFile.exists()){
+            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            holder.imageView.setImageBitmap(bitmap);
+        }
 
         holder.tvBookTitle.setText(dataItem.getJudulBuku());
         holder.tvBookAuthors.setText(dataItem.getPengarang());
 
         int a = dataItem.getJumlahCopy();
         int b = dataItem.getTotalDipinjam();
-        holder.tvAvailability.setText("Tersedia "+(a-b)+" / "+a);
+        holder.tvAvailability.setText("Available "+(a-b)+" / "+a);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intentDetail = new Intent(mContext, BookDetailActivity.class);

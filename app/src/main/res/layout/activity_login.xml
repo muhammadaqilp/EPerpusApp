@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:gravity="center_vertical"
+    android:fitsSystemWindows="true"
+    tools:context=".LoginActivity">
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/nim_mhs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="8dp"
+        android:fontFamily="@font/roboto"
+        android:imeOptions="actionNext"
+        android:maxLines="1"
+        android:inputType="text"
+        app:met_baseColor="@color/c7"
+        android:hint="NIM"
+        android:padding="4dp"
+        android:background="@drawable/rectangle_5"
+        app:met_floatingLabel="highlight" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="8dp"
+        android:fontFamily="@font/roboto"
+        app:met_baseColor="@color/c7"
+        android:hint="Password"
+        android:imeOptions="actionNext"
+        android:inputType="textPassword"
+        android:padding="4dp"
+        app:met_floatingLabel="highlight" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_btn5"
+        android:text="LOGIN"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/roboto"/>
+
+</LinearLayout>

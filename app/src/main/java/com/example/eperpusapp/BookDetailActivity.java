@@ -6,10 +6,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.TextView;
 
-import com.example.eperpusapp.Fragment.HomeFragment;
-import com.example.eperpusapp.Model.DataItem;
+import com.example.eperpusapp.Model.DataItemBuku;
 import com.example.eperpusapp.databinding.ActivityBookDetailBinding;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
@@ -41,7 +39,7 @@ public class BookDetailActivity extends AppCompatActivity {
             binding.txtSummary.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
         }
 
-        DataItem dataItem = getIntent().getParcelableExtra(EXTRA_BOOK_DETAIL);
+        DataItemBuku dataItem = getIntent().getParcelableExtra(EXTRA_BOOK_DETAIL);
 
         binding.bookTitleDetail.setText(dataItem.getJudulBuku());
         binding.bookAuthorsDetail.setText(dataItem.getPengarang());
@@ -51,5 +49,16 @@ public class BookDetailActivity extends AppCompatActivity {
         binding.totalPages.setText(String.valueOf(dataItem.getJumlahHalaman()));
         binding.bookCategory.setText(dataItem.getKategori());
         binding.txtSummary.setText(dataItem.getSinopsis());
+
+        int a = dataItem.getJumlahCopy();
+        int b = dataItem.getTotalDipinjam();
+        int c = a-b;
+        if (c == 0){
+            binding.btnBorrow.setEnabled(false);
+            binding.jumlahAvail.setText("Not Available");
+        }
+        else {
+            binding.jumlahAvail.setText("Available " + c + " / " + a);
+        }
     }
 }
