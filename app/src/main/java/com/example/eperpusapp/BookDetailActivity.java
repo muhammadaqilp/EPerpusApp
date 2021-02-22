@@ -30,8 +30,6 @@ public class BookDetailActivity extends AppCompatActivity {
         binding.btnBookmark.bringToFront();
 
         binding.btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
             finish();
         });
 
@@ -52,12 +50,11 @@ public class BookDetailActivity extends AppCompatActivity {
 
         int a = dataItem.getJumlahCopy();
         int b = dataItem.getTotalDipinjam();
-        int c = a-b;
-        if (c == 0){
+        int c = a - b;
+        if (c == 0) {
             binding.btnBorrow.setEnabled(false);
             binding.jumlahAvail.setText("Not Available");
-        }
-        else {
+        } else {
             binding.jumlahAvail.setText("Available " + c + " / " + a);
         }
     }

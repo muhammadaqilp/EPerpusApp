@@ -3,6 +3,8 @@
     package="com.example.eperpusapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,13 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPerpusApp">
-        <activity android:name=".ReadBookActivity"></activity>
+        <activity android:name=".Layout.DialogNoInternet"></activity>
+        <activity android:name=".Layout.DialogConfirmation" />
+        <activity android:name=".ReadBookActivity" />
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".BookDetailActivity" />
-        <activity
-            android:name=".ProfileActivity" />
+        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="adjustResize">

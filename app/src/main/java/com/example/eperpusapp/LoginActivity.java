@@ -3,25 +3,25 @@ package com.example.eperpusapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.example.eperpusapp.Fragment.HomeFragment;
-import com.example.eperpusapp.Model.DataItemBuku;
+import com.example.eperpusapp.Layout.DialogConfirmation;
+import com.example.eperpusapp.Layout.DialogNoInternet;
 import com.example.eperpusapp.Model.DataItemUser;
 import com.example.eperpusapp.Model.ResponseUser;
 import com.example.eperpusapp.Network.ApiService;
 import com.example.eperpusapp.Session.SessionManagement;
-import com.example.eperpusapp.databinding.ActivityBookDetailBinding;
 import com.example.eperpusapp.databinding.ActivityLoginBinding;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -92,8 +92,14 @@ public class LoginActivity extends AppCompatActivity {
                 binding.password.requestFocus();
                 return;
             } else {
-                login(username, password);
-                binding.btnLogin.setEnabled(true);
+                if (checkConnection() == false) {
+                    Log.d("SHOW ALERT", String.valueOf(checkConnection()));
+                    showAlert();
+                } else {
+                    Log.d("SHOW ALERT", String.valueOf(checkConnection()));
+                    login(username, password);
+                    binding.btnLogin.setEnabled(true);
+                }
             }
         });
 
@@ -132,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
         //1.login to app and save session user
         //2. move to mainactivity
 
-        dialog.setMessage("Please Wait...");
+        dialog.setMessage("Logging in...");
         dialog.show();
         ApiService.apiCall().getUserDetail(username, password)
                 .enqueue(new Callback<ResponseUser>() {
@@ -170,4 +176,34 @@ public class LoginActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+    private boolean checkConnection() {
+        boolean connected;
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+        } else {
+            connected = false;
+        }
+        return connected;
+    }
+
+//    private void showAlert() {
+//        AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+//        alertDialog.setTitle("Alert");
+//        alertDialog.setMessage("No Internet Connection!");
+//        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Dismiss",
+//                (dialog, which) -> dialog.dismiss());
+//        alertDialog.show();
+//    }
+
+    private void showAlert() {
+        DialogNoInternet dialog = new DialogNoInternet(LoginActivity.this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+
 }

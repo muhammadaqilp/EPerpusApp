@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/framedialog"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".Layout.DialogNoInternet">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sorry, No Internet Connection!"
+        android:fontFamily="@font/roboto"
+        android:padding="8dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <Button
+        android:id="@+id/btnDismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:layout_gravity="center_horizontal"
+        android:background="?android:attr/selectableItemBackground"
+        android:textSize="18sp"
+        android:textColor="@color/c7"
+        android:text="DISMISS"/>
+
+</LinearLayout>

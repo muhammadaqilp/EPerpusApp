@@ -59,11 +59,11 @@ public class MyBookFragment extends Fragment {
     }
 
     private void refresh() {
-        current = ReadBookActivity.pageNumber+1;
+        current = ReadBookActivity.pageNumber + 1;
         Log.d("CURRENT", String.valueOf(current));
         total = 5;
-        progress = 100*current/total;
-        percentage.setText(progress+"%");
+        progress = 100 * current / total;
+        percentage.setText(progress + "%");
         Log.d("RESULT", String.valueOf(progress));
         progressBar.setProgress(progress);
     }

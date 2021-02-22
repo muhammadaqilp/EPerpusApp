@@ -26,12 +26,9 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
 
     private static final String TAG = ReadBookActivity.class.getSimpleName();
 
-    private final static int REQUEST_CODE = 42;
-    public static final int PERMISSION_CODE = 42042;
-
     Toolbar toolbar;
     PDFView pdfView;
-    public static int pageNumber;
+    public static int pageNumber = -1;
     Uri uri;
 
     @Override
@@ -61,8 +58,10 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
 
     @Override
     public void onPageChanged(int page, int pageCount) {
-        pageNumber = page;
-        setTitle(String.format("%s %s / %s", pdfView, page + 1, pageCount));
+        if (page > pageNumber) {
+            pageNumber = page;
+            setTitle(String.format("%s %s / %s", pdfView, page + 1, pageCount));
+        }
     }
 
     @Override
@@ -119,10 +118,10 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                Toast.makeText(this, "Page Number: "+(pageNumber+1), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Page Number: " + (pageNumber + 1), Toast.LENGTH_SHORT).show();
                 return true;
         }
 
