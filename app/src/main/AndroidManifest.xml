@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPerpusApp">
-        <activity android:name=".Layout.DialogNoInternet"></activity>
+        <activity android:name=".CategoryActivity"></activity>
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".Layout.DialogNoInternet" />
         <activity android:name=".Layout.DialogConfirmation" />
         <activity android:name=".ReadBookActivity" />
         <activity

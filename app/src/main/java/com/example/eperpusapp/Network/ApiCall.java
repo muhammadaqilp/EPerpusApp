@@ -1,6 +1,7 @@
 package com.example.eperpusapp.Network;
 
 import com.example.eperpusapp.Model.ResponseBuku;
+import com.example.eperpusapp.Model.ResponseCategory;
 import com.example.eperpusapp.Model.ResponseUser;
 
 import retrofit2.Call;
@@ -16,5 +17,14 @@ public interface ApiCall {
 
     @GET("login/{username}/{password}")
     Call<ResponseUser> getUserDetail(@Path("username") String username, @Path("password") String password);
+
+    @GET("search/{keyword}")
+    Call<ResponseBuku> getCollectionSearch(@Path("keyword") String keyword);
+
+    @GET("listkategori")
+    Call<ResponseCategory> getCategoryList();
+
+    @GET("kategori/{category}")
+    Call<ResponseBuku> getCollectionCategory(@Path("category") String category);
 
 }

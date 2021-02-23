@@ -4,9 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.eperpusapp.Layout.DialogConfirmation;
+import com.example.eperpusapp.Layout.DialogNoInternet;
 import com.example.eperpusapp.Model.DataItemBuku;
 import com.example.eperpusapp.databinding.ActivityBookDetailBinding;
 
@@ -56,6 +60,17 @@ public class BookDetailActivity extends AppCompatActivity {
             binding.jumlahAvail.setText("Not Available");
         } else {
             binding.jumlahAvail.setText("Available " + c + " / " + a);
+            binding.btnBorrow.setOnClickListener(v -> {
+                showDialog();
+            });
         }
     }
+
+    private void showDialog() {
+        DialogConfirmation dialog = new DialogConfirmation(BookDetailActivity.this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+
 }

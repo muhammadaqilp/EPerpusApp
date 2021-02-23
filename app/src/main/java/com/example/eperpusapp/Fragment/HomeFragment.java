@@ -1,6 +1,7 @@
 package com.example.eperpusapp.Fragment;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,11 +30,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.eperpusapp.Adapter.CollectionBookAdapter;
+import com.example.eperpusapp.CategoryActivity;
 import com.example.eperpusapp.Model.DataItemBuku;
 import com.example.eperpusapp.Model.ResponseBuku;
 import com.example.eperpusapp.Network.ApiService;
 import com.example.eperpusapp.ProfileActivity;
 import com.example.eperpusapp.R;
+import com.example.eperpusapp.SearchActivity;
 import com.example.eperpusapp.Session.SessionManagement;
 
 import java.util.ArrayList;
@@ -51,7 +54,7 @@ public class HomeFragment extends Fragment {
     ImageView imageViewProfile, imageBanner;
     List<DataItemBuku> dataItemList;
     RecyclerView rvCollection;
-    TextView cat1, name1;
+    TextView seeAll, name1;
 
     public static final String EXTRA_USER_HOME = "extra_user_home";
     SearchView searchView;
@@ -72,7 +75,7 @@ public class HomeFragment extends Fragment {
         imageViewProfile = view.findViewById(R.id.profile_image);
         imageBanner = view.findViewById(R.id.img_banner);
         progressBar = view.findViewById(R.id.progressBar);
-        cat1 = view.findViewById(R.id.categ1);
+        seeAll = view.findViewById(R.id.seeAll);
         name1 = view.findViewById(R.id.qw1);
         searchView = view.findViewById(R.id.searchView);
         imageViewProfile.setOnClickListener(v -> {
@@ -85,21 +88,38 @@ public class HomeFragment extends Fragment {
                 .into(imageBanner);
 
         LinearLayout s = view.findViewById(R.id.linear);
-        s.setOnTouchListener(new View.OnTouchListener() {
+        s.setOnTouchListener((v, event) -> {
+            hideSoftKeyboard(getActivity());
+            return false;
+        });
+
+//        s.setOnFocusChangeListener((v, hasFocus) -> {
+//            if (hasFocus) {
+//                hideSoftKeyboard(getActivity());
+//            }
+//        });
+
+        searchView.clearFocus();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                hideSoftKeyboard(getActivity());
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(getContext(), SearchActivity.class);
+                intent.putExtra("EXTRA_CODE", 0);
+                intent.putExtra("EXTRA_SEARCH", query);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
                 return false;
             }
         });
 
-        s.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    hideSoftKeyboard(getActivity());
-                }
-            }
+        seeAll.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), CategoryActivity.class);
+            startActivity(intent);
         });
 
         rvCollection.setNestedScrollingEnabled(false);
