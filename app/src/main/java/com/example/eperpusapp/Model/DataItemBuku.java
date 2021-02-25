@@ -46,7 +46,7 @@ public class DataItemBuku implements Parcelable {
 	@SerializedName("sinopsis")
 	private String sinopsis;
 
-	protected DataItemBuku(Parcel in) {
+	public DataItemBuku(Parcel in) {
 		jumlahCopy = in.readInt();
 		fileBuku = in.readString();
 		idbuku = in.readInt();

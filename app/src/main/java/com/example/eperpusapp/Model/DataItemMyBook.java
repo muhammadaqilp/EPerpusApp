@@ -16,6 +16,9 @@ public class DataItemMyBook {
 	@SerializedName("progress_baca")
 	private int progressBaca;
 
+	@SerializedName("idbuku")
+	private int idBuku;
+
 	@SerializedName("tanggal_kembali")
 	private String tanggalKembali;
 
@@ -51,5 +54,9 @@ public class DataItemMyBook {
 
 	public String getPengarang(){
 		return pengarang;
+	}
+
+	public int getIdBuku() {
+		return idBuku;
 	}
 }

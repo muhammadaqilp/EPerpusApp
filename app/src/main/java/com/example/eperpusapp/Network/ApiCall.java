@@ -16,6 +16,9 @@ public interface ApiCall {
     @GET("buku")
     Call<ResponseBuku> getCollectionList();
 
+    @GET("detailbuku/{id}")
+    Call<ResponseBuku> getCollectionDetail(@Path("id") int id);
+
     @GET("login/{username}/{password}")
     Call<ResponseUser> getUserDetail(@Path("username") String username, @Path("password") String password);
 
