@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.eperpusapp.Model.DataItemBuku;
 import com.example.eperpusapp.Model.DataItemMyBook;
 import com.example.eperpusapp.R;
@@ -46,6 +47,9 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
 
         String tgl = separated[0]+" "+separated[1]+" "+separated[2]+" "+separated[3];
 
+        Glide.with(mContext)
+                .load(data.getFotoBuku())
+                .into(holder.binding.bookImage);
         holder.binding.bookTitle.setText(data.getJudulBuku());
         holder.binding.bookAuthors.setText(data.getPengarang());
         holder.binding.progressPercentage.setText(data.getProgressBaca()+"%");
