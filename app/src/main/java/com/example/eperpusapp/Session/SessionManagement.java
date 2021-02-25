@@ -12,6 +12,7 @@ public class SessionManagement {
     String SESSION_KEY = "session_user";
     String SESSION_NAME = "session_username";
     String SESSION_NIM = "session_nim";
+    String SESSION_PHOTO = "session_photo";
     String SESSION_ANGKATAN = "session_angkatan";
     String SESSION_STATUS = "session_status";
     String SESSION_PRODI = "session_prodi";
@@ -28,6 +29,7 @@ public class SessionManagement {
         String nim = user.getUsername();
         int angkatan = user.getAngkatan();
         String status = user.getStatus();
+        String photo = user.getFotoUser();
         String prodi = user.getJurusan();
         String fakultas = user.getFakultas();
 
@@ -38,6 +40,7 @@ public class SessionManagement {
         editor.putString(SESSION_STATUS, status).commit();
         editor.putString(SESSION_PRODI, prodi).commit();
         editor.putString(SESSION_FAKULTAS, fakultas).commit();
+        editor.putString(SESSION_PHOTO, photo).commit();
     }
 
     public int getSession(){
@@ -62,6 +65,10 @@ public class SessionManagement {
 
     public String getSessionProdi(){
         return sharedPreferences.getString(SESSION_PRODI, "NULL");
+    }
+
+    public String getSessionPhoto(){
+        return sharedPreferences.getString(SESSION_PHOTO, "NULL");
     }
 
     public String getSessionFakultas(){

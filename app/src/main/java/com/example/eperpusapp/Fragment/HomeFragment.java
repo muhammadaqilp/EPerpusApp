@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
     List<DataItemBuku> dataItemList;
     RecyclerView rvCollection;
     TextView seeAll, name1;
+    SessionManagement sessionManagement;
 
     public static final String EXTRA_USER_HOME = "extra_user_home";
     SearchView searchView;
@@ -83,9 +84,17 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
+        sessionManagement = new SessionManagement(getContext());
+
         Glide.with(this)
                 .load("http://tulis.uinjkt.ac.id/img/slide/slide1.png")
                 .into(imageBanner);
+
+        String photo = sessionManagement.getSessionPhoto();
+
+        Glide.with(this)
+                .load(photo)
+                .into(imageViewProfile);
 
         LinearLayout s = view.findViewById(R.id.linear);
         s.setOnTouchListener((v, event) -> {

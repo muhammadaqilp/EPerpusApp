@@ -141,6 +141,7 @@
                                 android:textAlignment="center" />
 
                             <TextView
+                                android:id="@+id/cat3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
@@ -148,7 +149,7 @@
                                 android:background="@drawable/rectangle_4"
                                 android:fontFamily="@font/roboto"
                                 android:padding="8dp"
-                                android:text="Category 3"
+                                android:text="Novel"
                                 android:textAlignment="center" />
                         </LinearLayout>
 
@@ -183,6 +184,7 @@
                                 android:textAlignment="center" />
 
                             <TextView
+                                android:id="@+id/cat31"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
@@ -190,7 +192,7 @@
                                 android:background="@drawable/rectangle_4"
                                 android:fontFamily="@font/roboto"
                                 android:padding="8dp"
-                                android:text="Category 3"
+                                android:text="Big Data"
                                 android:textAlignment="center" />
                         </LinearLayout>
                     </LinearLayout>

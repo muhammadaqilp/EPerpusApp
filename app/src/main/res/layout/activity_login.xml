@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp"
-    android:gravity="center_vertical"
+    android:gravity="bottom"
+    android:background="@drawable/backgroundlogin"
     android:fitsSystemWindows="true"
     tools:context=".LoginActivity">
 

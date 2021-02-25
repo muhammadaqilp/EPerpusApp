@@ -21,6 +21,9 @@ public class DataItemUser implements Parcelable {
     @SerializedName("angkatan")
     private int angkatan;
 
+    @SerializedName("foto_user")
+    private String fotoUser;
+
     @SerializedName("nama_lengkap")
     private String namaLengkap;
 
@@ -38,6 +41,7 @@ public class DataItemUser implements Parcelable {
         iduser = in.readInt();
         password = in.readString();
         angkatan = in.readInt();
+        fotoUser = in.readString();
         namaLengkap = in.readString();
         jurusan = in.readString();
         status = in.readString();
@@ -66,6 +70,10 @@ public class DataItemUser implements Parcelable {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getFotoUser() {
+        return fotoUser;
     }
 
     public int getAngkatan() {
@@ -120,6 +128,10 @@ public class DataItemUser implements Parcelable {
         this.username = username;
     }
 
+    public void setFotoUser(String fotoUser) {
+        this.fotoUser = fotoUser;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -135,5 +147,6 @@ public class DataItemUser implements Parcelable {
         dest.writeString(jurusan);
         dest.writeString(status);
         dest.writeString(username);
+        dest.writeString(fotoUser);
     }
 }

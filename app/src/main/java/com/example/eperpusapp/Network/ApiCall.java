@@ -2,6 +2,7 @@ package com.example.eperpusapp.Network;
 
 import com.example.eperpusapp.Model.ResponseBuku;
 import com.example.eperpusapp.Model.ResponseCategory;
+import com.example.eperpusapp.Model.ResponseMyBook;
 import com.example.eperpusapp.Model.ResponseUser;
 
 import retrofit2.Call;
@@ -26,5 +27,8 @@ public interface ApiCall {
 
     @GET("kategori/{category}")
     Call<ResponseBuku> getCollectionCategory(@Path("category") String category);
+
+    @GET("sedangpinjam/{iduser}")
+    Call<ResponseMyBook> getMyBookList(@Path("iduser") int id);
 
 }

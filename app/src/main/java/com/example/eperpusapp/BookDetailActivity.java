@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.example.eperpusapp.Layout.DialogConfirmation;
 import com.example.eperpusapp.Layout.DialogNoInternet;
 import com.example.eperpusapp.Model.DataItemBuku;
@@ -43,6 +44,9 @@ public class BookDetailActivity extends AppCompatActivity {
 
         DataItemBuku dataItem = getIntent().getParcelableExtra(EXTRA_BOOK_DETAIL);
 
+        Glide.with(this)
+                .load(dataItem.getFotoBuku())
+                .into(binding.img);
         binding.bookTitleDetail.setText(dataItem.getJudulBuku());
         binding.bookAuthorsDetail.setText(dataItem.getPengarang());
         binding.isbnDetail.setText(dataItem.getIsbn());

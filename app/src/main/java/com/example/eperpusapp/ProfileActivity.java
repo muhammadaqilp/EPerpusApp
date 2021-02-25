@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.eperpusapp.Session.SessionManagement;
 import com.example.eperpusapp.databinding.ActivityBookDetailBinding;
 import com.example.eperpusapp.databinding.ActivityLoginBinding;
@@ -51,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void showProfile() {
+        String photo = sessionManagement.getSessionPhoto();
         String nama = sessionManagement.getSessionName();
         String nim = sessionManagement.getSessionNim();
         String prodi = sessionManagement.getSessionProdi();
@@ -58,6 +60,9 @@ public class ProfileActivity extends AppCompatActivity {
         int angkatan = sessionManagement.getSessionAngkatan();
         String status = sessionManagement.getSessionStatus();
 
+        Glide.with(this)
+                .load(photo)
+                .into(binding.photoImage);
         binding.txtNama.setText(nama);
         binding.txtNim.setText(nim);
         binding.txtProdi.setText(prodi);

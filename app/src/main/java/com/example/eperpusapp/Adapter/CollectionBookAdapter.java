@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.eperpusapp.BookDetailActivity;
 import com.example.eperpusapp.Model.DataItemBuku;
 import com.example.eperpusapp.R;
@@ -47,6 +48,10 @@ public class CollectionBookAdapter extends RecyclerView.Adapter<CollectionBookAd
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             holder.imageView.setImageBitmap(bitmap);
         }
+
+        Glide.with(mContext)
+                .load(dataItem.getFotoBuku())
+                .into(holder.imageView);
 
         holder.tvBookTitle.setText(dataItem.getJudulBuku());
         holder.tvBookAuthors.setText(dataItem.getPengarang());
