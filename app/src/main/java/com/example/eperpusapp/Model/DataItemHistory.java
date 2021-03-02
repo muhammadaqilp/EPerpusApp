@@ -2,13 +2,13 @@ package com.example.eperpusapp.Model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DataItemMyBook {
-
-	@SerializedName("file_buku")
-	private String fileBuku;
+public class DataItemHistory {
 
 	@SerializedName("foto_buku")
 	private String fotoBuku;
+
+	@SerializedName("idbuku")
+	private int idbuku;
 
 	@SerializedName("tanggal_pinjam")
 	private String tanggalPinjam;
@@ -16,27 +16,24 @@ public class DataItemMyBook {
 	@SerializedName("progress_baca")
 	private int progressBaca;
 
-	@SerializedName("idbuku")
-	private int idBuku;
-
-	@SerializedName("idsedang_pinjam")
-	private int idPinjam;
-
-	@SerializedName("tanggal_kembali")
-	private String tanggalKembali;
+	@SerializedName("idriwayat_pinjam")
+	private int idriwayatPinjam;
 
 	@SerializedName("judul_buku")
 	private String judulBuku;
 
+	@SerializedName("tanggal_dikembalikan")
+	private String tanggalDikembalikan;
+
 	@SerializedName("pengarang")
 	private String pengarang;
 
-	public String getFileBuku(){
-		return fileBuku;
-	}
-
 	public String getFotoBuku(){
 		return fotoBuku;
+	}
+
+	public int getIdbuku(){
+		return idbuku;
 	}
 
 	public String getTanggalPinjam(){
@@ -47,23 +44,19 @@ public class DataItemMyBook {
 		return progressBaca;
 	}
 
-	public String getTanggalKembali(){
-		return tanggalKembali;
+	public int getIdriwayatPinjam(){
+		return idriwayatPinjam;
 	}
 
 	public String getJudulBuku(){
 		return judulBuku;
 	}
 
+	public String getTanggalDikembalikan(){
+		return tanggalDikembalikan;
+	}
+
 	public String getPengarang(){
 		return pengarang;
-	}
-
-	public int getIdBuku() {
-		return idBuku;
-	}
-
-	public int getIdPinjam() {
-		return idPinjam;
 	}
 }

@@ -47,7 +47,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private CollectionBookAdapter adapter;
     private ProgressBar progressBar;
@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
     List<DataItemBuku> dataItemList;
     RecyclerView rvCollection;
     TextView seeAll, name1;
+    TextView cat1, cat2, cat3, cat4, cat5, cat6;
     SessionManagement sessionManagement;
 
     public static final String EXTRA_USER_HOME = "extra_user_home";
@@ -78,6 +79,12 @@ public class HomeFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         seeAll = view.findViewById(R.id.seeAll);
         name1 = view.findViewById(R.id.qw1);
+        cat1 = view.findViewById(R.id.c1);
+        cat2 = view.findViewById(R.id.c2);
+        cat3 = view.findViewById(R.id.c3);
+        cat4 = view.findViewById(R.id.c4);
+        cat5 = view.findViewById(R.id.c5);
+        cat6 = view.findViewById(R.id.c6);
         searchView = view.findViewById(R.id.searchView);
         imageViewProfile.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), ProfileActivity.class);
@@ -131,6 +138,13 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
+        cat1.setOnClickListener(this);
+        cat2.setOnClickListener(this);
+        cat3.setOnClickListener(this);
+        cat4.setOnClickListener(this);
+        cat5.setOnClickListener(this);
+        cat6.setOnClickListener(this);
+
         rvCollection.setNestedScrollingEnabled(false);
         dataItemList = new ArrayList<>();
 
@@ -182,4 +196,59 @@ public class HomeFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.c1:
+                String str = cat1.getText().toString();
+                Intent intent = new Intent(getContext(), SearchActivity.class);
+                intent.putExtra("EXTRA_CODE", 1);
+                intent.putExtra("EXTRA_DATA", str);
+                startActivity(intent);
+                break;
+
+            case R.id.c2:
+                String str1 = cat2.getText().toString();
+                Intent intent1 = new Intent(getContext(), SearchActivity.class);
+                intent1.putExtra("EXTRA_CODE", 1);
+                intent1.putExtra("EXTRA_DATA", str1);
+                startActivity(intent1);
+                break;
+
+            case R.id.c3:
+                String str2 = cat3.getText().toString();
+                Intent intent2 = new Intent(getContext(), SearchActivity.class);
+                intent2.putExtra("EXTRA_CODE", 1);
+                intent2.putExtra("EXTRA_DATA", str2);
+                startActivity(intent2);
+                break;
+
+            case R.id.c4:
+                String str3 = cat4.getText().toString();
+                Intent intent3 = new Intent(getContext(), SearchActivity.class);
+                intent3.putExtra("EXTRA_CODE", 1);
+                intent3.putExtra("EXTRA_DATA", str3);
+                startActivity(intent3);
+                break;
+
+            case R.id.c5:
+                String str4 = cat5.getText().toString();
+                Intent intent4 = new Intent(getContext(), SearchActivity.class);
+                intent4.putExtra("EXTRA_CODE", 1);
+                intent4.putExtra("EXTRA_DATA", str4);
+                startActivity(intent4);
+                break;
+
+            case R.id.c6:
+                String str5 = cat6.getText().toString();
+                Intent intent5 = new Intent(getContext(), SearchActivity.class);
+                intent5.putExtra("EXTRA_CODE", 1);
+                intent5.putExtra("EXTRA_DATA", str5);
+                startActivity(intent5);
+                break;
+
+            default:
+                break;
+        }
+    }
 }

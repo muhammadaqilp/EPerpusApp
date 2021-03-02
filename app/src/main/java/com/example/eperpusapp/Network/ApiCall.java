@@ -2,7 +2,9 @@ package com.example.eperpusapp.Network;
 
 import com.example.eperpusapp.Model.ResponseBuku;
 import com.example.eperpusapp.Model.ResponseCategory;
+import com.example.eperpusapp.Model.ResponseHistory;
 import com.example.eperpusapp.Model.ResponseMyBook;
+import com.example.eperpusapp.Model.ResponseReturn;
 import com.example.eperpusapp.Model.ResponseUser;
 
 import retrofit2.Call;
@@ -33,5 +35,11 @@ public interface ApiCall {
 
     @GET("sedangpinjam/{iduser}")
     Call<ResponseMyBook> getMyBookList(@Path("iduser") int id);
+
+    @GET("riwayat/{iduser}/{idbuku}/{idpinjam}/{timestamp}")
+    Call<ResponseReturn> getResponseReturn(@Path("iduser") int iduser, @Path("idbuku") int idbuku, @Path("idpinjam") int idpinjam, @Path("timestamp") String timestamp);
+
+    @GET("history/{iduser}")
+    Call<ResponseHistory> getHistoryList(@Path("iduser") int iduser);
 
 }

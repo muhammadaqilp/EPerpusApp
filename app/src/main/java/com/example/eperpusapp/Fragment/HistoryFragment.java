@@ -2,65 +2,91 @@ package com.example.eperpusapp.Fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.example.eperpusapp.Adapter.HistoryBookAdapter;
+import com.example.eperpusapp.Model.DataItemHistory;
+import com.example.eperpusapp.Model.ResponseHistory;
+import com.example.eperpusapp.Network.ApiService;
 import com.example.eperpusapp.R;
+import com.example.eperpusapp.Session.SessionManagement;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HistoryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class HistoryFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public HistoryFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HistoryFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HistoryFragment newInstance(String param1, String param2) {
-        HistoryFragment fragment = new HistoryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private RecyclerView rvHistory;
+    private HistoryBookAdapter adapter;
+    List<DataItemHistory> dataItemHistory;
+    private ProgressBar progressBar;
+    private int idUser;
+    SessionManagement sessionManagement;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_history, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        sessionManagement = new SessionManagement(getContext());
+        idUser = sessionManagement.getSession();
+        progressBar = view.findViewById(R.id.progressCircle);
+        rvHistory = view.findViewById(R.id.rv_history);
+        dataItemHistory = new ArrayList<>();
+        showBookHistory(idUser);
+
+    }
+
+    private void showBookHistory(int idUser) {
+        progressBar.setVisibility(View.VISIBLE);
+        ApiService.apiCall().getHistoryList(idUser)
+                .enqueue(new Callback<ResponseHistory>() {
+                    @Override
+                    public void onResponse(Call<ResponseHistory> call, Response<ResponseHistory> response) {
+                        if (response.isSuccessful()){
+                            progressBar.setVisibility(View.GONE);
+                            List<DataItemHistory> history = response.body().getData();
+                            for (DataItemHistory his : history){
+                                dataItemHistory.add(his);
+
+                                adapter = new HistoryBookAdapter(dataItemHistory);
+                                adapter.notifyItemInserted(dataItemHistory.lastIndexOf(dataItemHistory));
+
+                                rvHistory.setHasFixedSize(true);
+                                rvHistory.setLayoutManager(new LinearLayoutManager(getContext()));
+                                rvHistory.setAdapter(adapter);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseHistory> call, Throwable t) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("HISTORY FRAGMENT", t.getMessage());
+                    }
+                });
     }
 }

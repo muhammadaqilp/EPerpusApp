@@ -27,15 +27,20 @@
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
-        android:layout_below="@id/toolbar"
+    <ProgressBar
+        android:id="@+id/progressCircle"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-    <include
-        layout="@layout/item_history_book"/>
-
-    </LinearLayout>
+        android:layout_below="@id/toolbar"
+        tools:listitem="@layout/item_history_book"/>
 
 </RelativeLayout>

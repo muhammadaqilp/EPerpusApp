@@ -33,6 +33,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Book Title"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/black"
             android:fontFamily="@font/roboto"
             android:textSize="22sp"/>
@@ -42,6 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_thin"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:text="Author Name"
             android:textColor="@color/black"
             android:textSize="20sp"

@@ -7,4 +7,8 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">tulis.uinjkt.ac.id</domain>
     </domain-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">172.24.144.1</domain>
+    </domain-config>
 </network-security-config>
