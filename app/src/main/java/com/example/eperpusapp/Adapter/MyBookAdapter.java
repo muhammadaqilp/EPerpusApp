@@ -103,7 +103,7 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
                             if(msg.equals("1")){
                                 dialog.dismiss();
                                 Toast.makeText(mContext, "Success to Return Book", Toast.LENGTH_SHORT).show();
-//                                removeAt(position);
+                                removeAt(position);
                             }
                             else {
                                 dialog.dismiss();

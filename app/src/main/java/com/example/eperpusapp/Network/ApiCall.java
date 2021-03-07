@@ -42,4 +42,16 @@ public interface ApiCall {
     @GET("history/{iduser}")
     Call<ResponseHistory> getHistoryList(@Path("iduser") int iduser);
 
+    @GET("pinjam/{iduser}/{idbuku}/{tanggalpinjam}/{tanggalkembali}")
+    Call<ResponseReturn> getResponseBorrow(@Path("iduser") int iduser, @Path("idbuku") int idbuku, @Path("tanggalpinjam") String tglpinjam, @Path("tanggalkembali") String tglkembali);
+
+    @GET("getwishlist/{iduser}")
+    Call<ResponseBuku> getWishlist(@Path("iduser") int iduser);
+
+    @GET("addwishlist/{iduser}/{idbuku}")
+    Call<ResponseReturn> getResponseAddWishlist(@Path("iduser") int iduser, @Path("idbuku") int idbuku);
+
+    @GET("removewishlist/{iduser}/{idbuku}")
+    Call<ResponseReturn> getResponseRemoveWishlist(@Path("iduser") int iduser, @Path("idbuku") int idbuku);
+
 }

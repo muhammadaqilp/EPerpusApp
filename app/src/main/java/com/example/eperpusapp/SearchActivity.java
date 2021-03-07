@@ -118,7 +118,7 @@ public class SearchActivity extends AppCompatActivity {
                                 }
                             } else {
                                 binding.progressBar.setVisibility(View.GONE);
-                                binding.txtEror.setVisibility(View.VISIBLE);
+                                binding.txtError.setVisibility(View.VISIBLE);
                                 binding.rvSearchCollection.setVisibility(View.GONE);
                             }
                         }

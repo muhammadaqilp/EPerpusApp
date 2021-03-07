@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,8 +13,10 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,22 +33,29 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.eperpusapp.Adapter.CollectionBookAdapter;
+import com.example.eperpusapp.Adapter.MyBookAdapter;
+import com.example.eperpusapp.Adapter.WishlistBookAdapter;
 import com.example.eperpusapp.CategoryActivity;
 import com.example.eperpusapp.Model.DataItemBuku;
+import com.example.eperpusapp.Model.DataItemMyBook;
 import com.example.eperpusapp.Model.ResponseBuku;
+import com.example.eperpusapp.Model.ResponseMyBook;
 import com.example.eperpusapp.Network.ApiService;
 import com.example.eperpusapp.ProfileActivity;
 import com.example.eperpusapp.R;
 import com.example.eperpusapp.SearchActivity;
 import com.example.eperpusapp.Session.SessionManagement;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -56,7 +66,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     RecyclerView rvCollection;
     TextView seeAll, name1;
     TextView cat1, cat2, cat3, cat4, cat5, cat6;
+    public List<Integer> idbook = new ArrayList<>();
+    public List<Integer> idmybook = new ArrayList<>();
     SessionManagement sessionManagement;
+
+    HashMap<Integer, Integer> hashMap = new HashMap<>();
 
     public static final String EXTRA_USER_HOME = "extra_user_home";
     SearchView searchView;
@@ -149,6 +163,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         dataItemList = new ArrayList<>();
 
         showBookList();
+        readingList(sessionManagement.getSession());
+        mybookList(sessionManagement.getSession());
     }
 
     private void showBookList() {
@@ -182,10 +198,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 });
     }
 
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
+//    public void hideKeyboard(View view) {
+//        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+//        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//    }
 
     public static void hideSoftKeyboard(Activity activity) {
         View a = activity.getCurrentFocus();
@@ -194,7 +210,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             inputMethodManager.hideSoftInputFromWindow(a.getWindowToken(), 0);
         }
     }
-
 
     @Override
     public void onClick(View v) {
@@ -250,5 +265,84 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+    private void readingList(int session) {
+        ApiService.apiCall().getWishlist(session)
+                .enqueue(new Callback<ResponseBuku>() {
+                    @Override
+                    public void onResponse(Call<ResponseBuku> call, Response<ResponseBuku> response) {
+                        if (response.isSuccessful()) {
+                            List<DataItemBuku> dataItemssz = response.body().getData();
+                            if (dataItemssz.isEmpty()) {
+                                saveTo(null);
+                            } else {
+                                for (DataItemBuku dataItems : dataItemssz) {
+                                    idbook.add(dataItems.getIdbuku());
+                                }
+                                Log.d("LIST", String.valueOf(idbook));
+                                saveTo(idbook);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBuku> call, Throwable t) {
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("PROFILE ACTIVITY", t.getMessage());
+                    }
+                });
+    }
+
+    private void mybookList(int session) {
+        ApiService.apiCall().getMyBookList(session)
+                .enqueue(new Callback<ResponseMyBook>() {
+                    @Override
+                    public void onResponse(Call<ResponseMyBook> call, Response<ResponseMyBook> response) {
+                        if (response.isSuccessful()){
+                            List<DataItemMyBook> dataItemssz = response.body().getData();
+                            if (dataItemssz.isEmpty()) {
+                                saveToMy(null);
+                            } else {
+                                for (DataItemMyBook dataItems : dataItemssz) {
+//                                    idmybook.add(dataItems.getIdBuku());
+                                    hashMap.put(dataItems.getIdBuku(), dataItems.getIdPinjam());
+                                }
+//                                Log.d("LIST", String.valueOf(idmybook));
+                                saveToMy(hashMap);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseMyBook> call, Throwable t) {
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("MY BOOK FRAGMENT", t.getMessage());
+                    }
+                });
+    }
+
+    private void saveTo(List<Integer> a) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor edit = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(a);
+
+        String TAG = "LIST_ID_"+sessionManagement.getSession();
+
+        edit.putString(TAG, json);
+        edit.commit();
+    }
+
+    private void saveToMy(HashMap<Integer, Integer> hashMap) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor edit = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(hashMap);
+
+        String TAG = "LIST_BORROW_"+sessionManagement.getSession();
+
+        edit.putString(TAG, json);
+        edit.commit();
     }
 }

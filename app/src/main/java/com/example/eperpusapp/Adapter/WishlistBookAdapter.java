@@ -2,8 +2,6 @@ package com.example.eperpusapp.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,27 +16,26 @@ import com.example.eperpusapp.BookDetailActivity;
 import com.example.eperpusapp.Model.DataItemBuku;
 import com.example.eperpusapp.R;
 
-import java.io.File;
 import java.util.List;
 
-public class CollectionBookAdapter extends RecyclerView.Adapter<CollectionBookAdapter.ViewHolder> {
+public class WishlistBookAdapter extends RecyclerView.Adapter<WishlistBookAdapter.ViewHolder> {
 
     private Context mContext;
     private List<DataItemBuku> dataItems;
 
-    public CollectionBookAdapter(List<DataItemBuku> dataItems) {
+    public WishlistBookAdapter(List<DataItemBuku> dataItems) {
         this.dataItems = dataItems;
     }
 
     @NonNull
     @Override
-    public CollectionBookAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_collection_book, parent, false);
-        return new ViewHolder(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_collection_book2, parent, false);
+        return new WishlistBookAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CollectionBookAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         mContext = holder.itemView.getContext();
 
         final DataItemBuku dataItem = dataItems.get(position);
@@ -80,7 +77,6 @@ public class CollectionBookAdapter extends RecyclerView.Adapter<CollectionBookAd
         public TextView tvAvailability;
 
         public ViewHolder(@NonNull View itemView) {
-
             super(itemView);
 
             imageView = itemView.findViewById(R.id.img_item_book);

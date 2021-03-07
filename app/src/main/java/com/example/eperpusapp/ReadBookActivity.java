@@ -36,8 +36,9 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
 
     Toolbar toolbar;
     PDFView pdfView;
-    public static int pageNumber = -1;
+    private int pageNumber = -1;
     public static String EXTRA_BOOK_FILE = "EXTRA_BOOK_FILE";
+    public static String EXTRA_BOOK_ID = "EXTRA_BOOK_ID";
     private ProgressDialog dialog;
     Uri uri;
 
@@ -52,6 +53,8 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.setCancelable(true);
 
         String file = getIntent().getStringExtra(EXTRA_BOOK_FILE);
         Log.d("FILE", file);
@@ -152,7 +155,7 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
     }
 
 
-    class RetrievePDFfromUrl extends AsyncTask<String, Void, InputStream> implements OnPageChangeListener, OnLoadCompleteListener, OnPageErrorListener {
+    class RetrievePDFfromUrl extends AsyncTask<String, Integer, InputStream> implements OnPageChangeListener, OnLoadCompleteListener, OnPageErrorListener {
 
         @Override
         protected void onPreExecute() {
@@ -162,33 +165,36 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
              * Showing Dialog
              */
             dialog.setMessage("Downloading file. Please wait...");
-            dialog.setIndeterminate(false);
-            dialog.setMax(100);
-            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            dialog.setCancelable(true);
             dialog.show();
         }
 
         @Override
         protected InputStream doInBackground(String... strings) {
-
-            InputStream inputStream = null;
+            InputStream inputStream;
 
             try {
                 URL url = new URL(strings[0]);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
 
-//                int lengthOfFile = urlConnection.getContentLength();
-//                int count;
-//                byte data[] = new byte[1024];
-//                long total = 0;
-//                while ((count = inputStream.read(data)) != -1) {
-//                    total += count;
-//                    // publishing the progress....
-//                    // After this onProgressUpdate will be called
-//                    publishProgress("" + (int) ((total * 100) / lengthOfFile));
-//                }
+                inputStream = new BufferedInputStream(url.openStream());
+
+                int lengthOfFile = urlConnection.getContentLength();
+                int count;
+                byte[] data = new byte[16384];
+                long total = 0;
+                while ((count = inputStream.read(data)) != -1) {
+                    if (isCancelled()) {
+                        inputStream.close();
+                        return null;
+                    }
+                    total += count;
+                    // publishing the progress....
+                    // After this onProgressUpdate will be called
+                    if (lengthOfFile > 0) {
+                        publishProgress((int) ((total * 100) / lengthOfFile));
+                    }
+                }
 
                 if (urlConnection.getResponseCode() == 200) {
                     inputStream = new BufferedInputStream(urlConnection.getInputStream());
@@ -201,13 +207,22 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
             return inputStream;
         }
 
+//        @Override
+//        protected void onProgressUpdate(Void... values) {
+//            dialog.setProgress(Integer.parseInt(String.valueOf(values)));
+//        }
+
         @Override
-        protected void onProgressUpdate(Void... values) {
-            dialog.setProgress(Integer.parseInt(String.valueOf(values)));
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            dialog.setIndeterminate(false);
+            dialog.setMax(100);
+            dialog.setProgress(values[0]);
         }
 
         @Override
         protected void onPostExecute(InputStream inputStream) {
+            dialog.dismiss();
             pdfView.fromStream(inputStream)
                     .defaultPage(pageNumber)
                     .swipeHorizontal(true)
@@ -233,7 +248,7 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
                 pageNumber = page;
                 setTitle(String.format("%s %s / %s", pdfView, page + 1, pageCount));
             }
-            Toast.makeText(ReadBookActivity.this, page + 1 + " of " + pageCount, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(ReadBookActivity.this, page + 1 + " of " + pageCount, Toast.LENGTH_SHORT).show();
         }
 
         @Override
