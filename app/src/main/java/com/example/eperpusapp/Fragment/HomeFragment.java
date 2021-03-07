@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     SessionManagement sessionManagement;
 
     HashMap<Integer, Integer> hashMap = new HashMap<>();
+    HashMap<Integer, Integer> hashMapRead = new HashMap<>();
 
     public static final String EXTRA_USER_HOME = "extra_user_home";
     SearchView searchView;
@@ -307,9 +308,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 for (DataItemMyBook dataItems : dataItemssz) {
 //                                    idmybook.add(dataItems.getIdBuku());
                                     hashMap.put(dataItems.getIdBuku(), dataItems.getIdPinjam());
+                                    hashMapRead.put(dataItems.getIdPinjam(), dataItems.getProgressBaca());
                                 }
 //                                Log.d("LIST", String.valueOf(idmybook));
                                 saveToMy(hashMap);
+                                saveToMyRead(hashMapRead);
                             }
                         }
                     }
@@ -341,6 +344,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         String json = gson.toJson(hashMap);
 
         String TAG = "LIST_BORROW_"+sessionManagement.getSession();
+
+        edit.putString(TAG, json);
+        edit.commit();
+    }
+
+
+    private void saveToMyRead(HashMap<Integer, Integer> hashMapRead) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor edit = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(hashMapRead);
+
+        String TAG = "LIST_PROGRESS_"+sessionManagement.getSession();
 
         edit.putString(TAG, json);
         edit.commit();

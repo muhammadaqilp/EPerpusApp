@@ -46,16 +46,17 @@ public class DialogConfirmation extends Dialog implements View.OnClickListener{
 
     private Context context;
     private Button btnYes, btnNo;
-    private int idBuku, idUser;
+    private int idBuku, idUser, idPinjam;
     HashMap<Integer, Integer> hashMap = new HashMap<>();
     private String file;
     private ProgressDialog dialog;
 
-    public DialogConfirmation(@NonNull Context context, int idBuku, int idUser, String file) {
+    public DialogConfirmation(@NonNull Context context, int idBuku, int idUser, int idPinjam, String file) {
         super(context);
         this.context = context;
         this.idBuku = idBuku;
         this.idUser = idUser;
+        this.idPinjam = idPinjam;
         this.file = file;
     }
 
@@ -129,7 +130,7 @@ public class DialogConfirmation extends Dialog implements View.OnClickListener{
                                 mybookList(idUser);
                                 Intent i = new Intent(getContext(), ReadBookActivity.class);
                                 i.putExtra(ReadBookActivity.EXTRA_BOOK_FILE, file);
-                                i.putExtra(ReadBookActivity.EXTRA_BOOK_ID, idBuku);
+                                i.putExtra(ReadBookActivity.EXTRA_BOOK_IDPINJAM, idPinjam);
                                 getContext().startActivity(i);
                             }
                             else {
@@ -185,18 +186,5 @@ public class DialogConfirmation extends Dialog implements View.OnClickListener{
 
         edit.putString(TAG, json);
         edit.commit();
-
-        see();
-    }
-
-    private void see(){
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        Gson gson = new Gson();
-        String zz = "LIST_BORROW_"+idUser;
-        String json = sp.getString(zz, "");
-        Type type = new TypeToken<HashMap<Integer, Integer>>() {}.getType();
-        HashMap<Integer, Integer> yy = gson.fromJson(json, type);
-
-        Log.d("IDLISTBUKUMYBORROWING", String.valueOf(yy));
     }
 }

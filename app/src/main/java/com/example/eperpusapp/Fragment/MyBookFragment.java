@@ -2,6 +2,7 @@ package com.example.eperpusapp.Fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +33,10 @@ import com.example.eperpusapp.ReadBookActivity;
 import com.example.eperpusapp.Session.SessionManagement;
 import com.example.eperpusapp.databinding.FragmentHomeBinding;
 import com.example.eperpusapp.databinding.FragmentMyBookBinding;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,14 +47,13 @@ import static android.app.Activity.RESULT_OK;
 
 public class MyBookFragment extends Fragment {
 
-    private LinearLayout a;
-    private int progress, current, total, id;
-    private FragmentMyBookBinding binding;
+    private int id;
 
     private MyBookAdapter adapter;
     private RecyclerView rvMyBook;
     List<DataItemMyBook> dataItemMyBooks;
     private ProgressBar progressCircle;
+    private HashMap<Integer, Integer> hashMapRead = new HashMap<>();
     SessionManagement sessionManagement;
 
     @Override
@@ -64,23 +67,18 @@ public class MyBookFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        a = view.findViewById(R.id.linear);
-//        percentage = view.findViewById(R.id.progressPercentage);
-//        progressBar = view.findViewById(R.id.progressBar);
-
-//        a.setOnClickListener(v -> {
-//            Intent intent = new Intent(getActivity(), ReadBookActivity.class);
-//            startActivity(intent);
-//        });
-
-//        refresh();
         sessionManagement = new SessionManagement(getContext());
         id = sessionManagement.getSession();
         progressCircle = view.findViewById(R.id.progressCircle);
         rvMyBook = view.findViewById(R.id.rv_mybook);
         dataItemMyBooks = new ArrayList<>();
-        showMyBook(id);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        showMyBook(id);
     }
 
     private void showMyBook(int id) {
@@ -89,17 +87,24 @@ public class MyBookFragment extends Fragment {
                 .enqueue(new Callback<ResponseMyBook>() {
                     @Override
                     public void onResponse(Call<ResponseMyBook> call, Response<ResponseMyBook> response) {
-                        if (response.isSuccessful()){
+                        if (response.isSuccessful()) {
                             progressCircle.setVisibility(View.GONE);
                             List<DataItemMyBook> a = response.body().getData();
-                            for (DataItemMyBook data : a){
-                                dataItemMyBooks.add(data);
-                                adapter = new MyBookAdapter(dataItemMyBooks);
-                                adapter.notifyItemInserted(dataItemMyBooks.lastIndexOf(dataItemMyBooks));
+                            if (a.isEmpty()) {
+                                saveToMyRead(null);
+                            } else {
+                                for (DataItemMyBook data : a) {
+                                    dataItemMyBooks.add(data);
+                                    hashMapRead.put(data.getIdPinjam(), data.getProgressBaca());
+                                    saveToMyRead(hashMapRead);
+                                    Log.d("PROGR_MB", String.valueOf(data.getProgressBaca()));
+                                    adapter = new MyBookAdapter(dataItemMyBooks);
+                                    adapter.notifyItemInserted(dataItemMyBooks.lastIndexOf(dataItemMyBooks));
 
-                                rvMyBook.setHasFixedSize(true);
-                                rvMyBook.setLayoutManager(new LinearLayoutManager(getContext()));
-                                rvMyBook.setAdapter(adapter);
+                                    rvMyBook.setHasFixedSize(true);
+                                    rvMyBook.setLayoutManager(new LinearLayoutManager(getContext()));
+                                    rvMyBook.setAdapter(adapter);
+                                }
                             }
                         }
                     }
@@ -113,23 +118,15 @@ public class MyBookFragment extends Fragment {
                 });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-//        refresh();
-//        dataItemMyBooks.clear();
-//        showMyBook(id);
+    private void saveToMyRead(HashMap<Integer, Integer> hashMapRead) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences.Editor edit = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(hashMapRead);
+
+        String TAG = "LIST_PROGRESS_" + sessionManagement.getSession();
+
+        edit.putString(TAG, json);
+        edit.commit();
     }
-
-//    private void refresh() {
-//        current = ReadBookActivity.pageNumber + 1;
-//        Log.d("CURRENT", String.valueOf(current));
-//        total = 5;
-//        progress = 100 * current / total;
-//        percentage.setText(progress + "%");
-//        Log.d("RESULT", String.valueOf(progress));
-//        progressBar.setProgress(progress);
-//    }
-
-
 }

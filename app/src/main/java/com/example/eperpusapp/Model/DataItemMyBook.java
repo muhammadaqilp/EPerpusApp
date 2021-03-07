@@ -16,6 +16,9 @@ public class DataItemMyBook {
 	@SerializedName("progress_baca")
 	private int progressBaca;
 
+	@SerializedName("jumlah_halaman")
+	private int jumlahHalaman;
+
 	@SerializedName("idbuku")
 	private int idBuku;
 
@@ -65,5 +68,9 @@ public class DataItemMyBook {
 
 	public int getIdPinjam() {
 		return idPinjam;
+	}
+
+	public int getJumlahHalaman() {
+		return jumlahHalaman;
 	}
 }

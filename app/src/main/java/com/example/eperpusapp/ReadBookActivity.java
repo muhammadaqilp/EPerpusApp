@@ -1,34 +1,47 @@
 package com.example.eperpusapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.eperpusapp.Fragment.MyBookFragment;
+import com.example.eperpusapp.Model.ResponseReturn;
+import com.example.eperpusapp.Network.ApiService;
+import com.example.eperpusapp.Session.SessionManagement;
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
+import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReadBookActivity extends AppCompatActivity implements OnPageChangeListener, OnLoadCompleteListener, OnPageErrorListener {
 
@@ -36,10 +49,13 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
 
     Toolbar toolbar;
     PDFView pdfView;
-    private int pageNumber = -1;
+    private int pageNumber;
     public static String EXTRA_BOOK_FILE = "EXTRA_BOOK_FILE";
-    public static String EXTRA_BOOK_ID = "EXTRA_BOOK_ID";
+    public static String EXTRA_BOOK_IDPINJAM = "EXTRA_BOOK_IDPINJAM";
+    public static String EXTRA_BOOK_PAGE = "EXTRA_BOOK_PAGE";
     private ProgressDialog dialog;
+    private int idpinjam;
+    SessionManagement sessionManagement;
     Uri uri;
 
     @Override
@@ -52,11 +68,15 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        sessionManagement = new SessionManagement(this);
+
         dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         dialog.setCancelable(true);
 
         String file = getIntent().getStringExtra(EXTRA_BOOK_FILE);
+        idpinjam = getIntent().getIntExtra(EXTRA_BOOK_IDPINJAM, 0);
+        pageNumber = getIntent().getIntExtra(EXTRA_BOOK_PAGE, 0);
         Log.d("FILE", file);
 
 
@@ -137,12 +157,15 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                updateProgress();
+                updateProgressLocal();
                 finish();
-                Toast.makeText(this, "Page Number: " + (pageNumber + 1), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Page Number: " + (pageNumber + 1), Toast.LENGTH_SHORT).show();
                 return true;
         }
 
@@ -255,5 +278,45 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
         public void onPageError(int page, Throwable t) {
 
         }
+    }
+
+    private void updateProgress() {
+        int page = pageNumber+1;
+        ApiService.apiCall().getResponseUpdateBaca(idpinjam, page)
+                .enqueue(new Callback<ResponseReturn>() {
+                    @Override
+                    public void onResponse(Call<ResponseReturn> call, Response<ResponseReturn> response) {
+                        if (response.isSuccessful()) {
+                            ResponseReturn resp = response.body();
+                            String msg = resp.getMessage();
+                            if (msg.equals("1")) {
+                                Toast.makeText(ReadBookActivity.this, "Last Page Read: "+page, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(ReadBookActivity.this, "Failed to Borrow Book", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseReturn> call, Throwable t) {
+                        Toast.makeText(ReadBookActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void updateProgressLocal() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor edit = sp.edit();
+        Gson gson = new Gson();
+        HashMap<Integer, Integer> hashMapRead = new HashMap<>();
+        hashMapRead.put(idpinjam, pageNumber);
+        String json = gson.toJson(hashMapRead);
+
+        String TAG = "LIST_PROGRESS_"+sessionManagement.getSession();
+
+        edit.putString(TAG, json);
+        edit.commit();
     }
 }

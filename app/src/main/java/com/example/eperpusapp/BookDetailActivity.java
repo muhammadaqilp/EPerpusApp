@@ -40,11 +40,10 @@ public class BookDetailActivity extends AppCompatActivity {
     private ActivityBookDetailBinding binding;
     public static final String EXTRA_BOOK_DETAIL = "extra_book_detail";
     SessionManagement sessionManagement;
-    private List<DataItemBuku> dataItems;
     private DataItemBuku dataItem;
     private List<Integer> arraylist;
     private boolean var, van, varmy;
-    private int iduser, idpinjam, a, b, c;
+    private int iduser, idpinjam, a, b, c, progressbaca;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -95,6 +94,7 @@ public class BookDetailActivity extends AppCompatActivity {
             van = readList(dataItem.getIdbuku(), sessionManagement.getSession());
             checkBtnBookmark(van);
         });
+
     }
 
     @Override
@@ -102,6 +102,9 @@ public class BookDetailActivity extends AppCompatActivity {
         super.onStart();
         varmy = checkMyBook(dataItem.getIdbuku());
         checkBtnRead(varmy);
+
+        progressbaca = checkProgress(idpinjam);
+        Log.d("PROGR_BD", String.valueOf(progressbaca));
     }
 
     private void checkBtnBookmark(boolean van) {
@@ -150,6 +153,9 @@ public class BookDetailActivity extends AppCompatActivity {
             else {
                 binding.jumlahAvail.setText("Available " + c + " / " + a);
             }
+            binding.btnRead.setOnClickListener(v -> {
+                readBook(dataItem.getFileBuku(), idpinjam, progressbaca);
+            });
         }
     }
 
@@ -281,8 +287,41 @@ public class BookDetailActivity extends AppCompatActivity {
         return val;
     }
 
+    private int checkProgress(int idpinjam){
+        int val = 0;
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        Gson gson = new Gson();
+        String zz = "LIST_PROGRESS_"+sessionManagement.getSession();
+        String json = sp.getString(zz, "");
+        Type type = new TypeToken<HashMap<Integer, Integer>>() {}.getType();
+        HashMap<Integer, Integer> prog = gson.fromJson(json, type);
+
+        Log.d("IDLISTBUKUMYPROGRESS", String.valueOf(prog));
+
+        if (prog == null){
+            val = 0;
+        }
+        else {
+            for (int key : prog.keySet()) {
+                if (key == idpinjam) {
+                    val = prog.get(key);
+                }
+            }
+        }
+        return val;
+    }
+
+    private void readBook(String fileBuku, int idpinjam, int progressbaca) {
+        Intent intent = new Intent(this, ReadBookActivity.class);
+        intent.putExtra(ReadBookActivity.EXTRA_BOOK_FILE, fileBuku);
+        intent.putExtra(ReadBookActivity.EXTRA_BOOK_IDPINJAM, idpinjam);
+        intent.putExtra(ReadBookActivity.EXTRA_BOOK_PAGE, progressbaca);
+        startActivity(intent);
+    }
+
     private void showDialog(int idBuku, int idUser, String file) {
-        DialogConfirmation dialog = new DialogConfirmation(this, idBuku, idUser, file);
+        DialogConfirmation dialog = new DialogConfirmation(this, idBuku, idUser, idpinjam, file);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }

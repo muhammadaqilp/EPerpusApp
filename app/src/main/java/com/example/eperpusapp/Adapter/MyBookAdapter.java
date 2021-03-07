@@ -3,6 +3,8 @@ package com.example.eperpusapp.Adapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,13 +71,20 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
                 .into(holder.binding.bookImage);
         holder.binding.bookTitle.setText(data.getJudulBuku());
         holder.binding.bookAuthors.setText(data.getPengarang());
-        holder.binding.progressPercentage.setText(data.getProgressBaca()+"%");
-        holder.binding.progressBar.setProgress(data.getProgressBaca());
+
+        int jumlahHalaman = data.getJumlahHalaman();
+        int halaman = data.getProgressBaca();
+        int progress = 100*halaman/jumlahHalaman;
+
+        Log.d("PROG", String.valueOf(progress));
+
+        holder.binding.progressPercentage.setText(progress+"%");
+        holder.binding.progressBar.setProgress(progress);
         holder.binding.tglKembali.setText(tgl);
 
         holder.binding.info.setOnClickListener(v -> sendToDetail(data.getIdBuku()));
 
-        holder.binding.bookImage.setOnClickListener(v -> readBook(data.getFileBuku()));
+        holder.binding.bookImage.setOnClickListener(v -> readBook(data.getFileBuku(), data.getIdPinjam(), data.getProgressBaca()));
 
         holder.binding.btnReturn.setOnClickListener(v -> {
             dialog = new ProgressDialog(mContext);
@@ -103,6 +112,7 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
                             if(msg.equals("1")){
                                 dialog.dismiss();
                                 Toast.makeText(mContext, "Success to Return Book", Toast.LENGTH_SHORT).show();
+//                                removeSP(idPinjam);
                                 removeAt(position);
                             }
                             else {
@@ -120,9 +130,11 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
                 });
     }
 
-    private void readBook(String file) {
+    private void readBook(String file, int idpinjam, int page) {
         Intent intent = new Intent(mContext, ReadBookActivity.class);
         intent.putExtra(ReadBookActivity.EXTRA_BOOK_FILE, file);
+        intent.putExtra(ReadBookActivity.EXTRA_BOOK_IDPINJAM, idpinjam);
+        intent.putExtra(ReadBookActivity.EXTRA_BOOK_PAGE, page);
         mContext.startActivity(intent);
     }
 
@@ -153,6 +165,16 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, dataItems.size());
     }
+//    private void removeSP(int idpinjam) {
+//        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
+//        SharedPreferences.Editor editor = sp.edit();
+//        editor.remove(String.valueOf(idpinjam));
+//        editor.commit();
+//
+//        SharedPreferences preferences = getSharedPreferences("Mypref", 0);
+//        preferences.edit().remove("text").commit();
+//    }
+
 
     @Override
     public int getItemCount() {

@@ -54,4 +54,6 @@ public interface ApiCall {
     @GET("removewishlist/{iduser}/{idbuku}")
     Call<ResponseReturn> getResponseRemoveWishlist(@Path("iduser") int iduser, @Path("idbuku") int idbuku);
 
+    @GET("updatebaca/{idpinjam}/{progress}")
+    Call<ResponseReturn> getResponseUpdateBaca(@Path("idpinjam") int idpinjam, @Path("progress") int progress);
 }
