@@ -126,11 +126,12 @@ public class DialogConfirmation extends Dialog implements View.OnClickListener{
                             String msg = resp.getMessage();
                             if(msg.equals("1")){
                                 dialog.dismiss();
+                                int idpinjambook = resp.getIdPinjam();
                                 Toast.makeText(context, "Success to Borrow Book", Toast.LENGTH_SHORT).show();
                                 mybookList(idUser);
                                 Intent i = new Intent(getContext(), ReadBookActivity.class);
                                 i.putExtra(ReadBookActivity.EXTRA_BOOK_FILE, file);
-                                i.putExtra(ReadBookActivity.EXTRA_BOOK_IDPINJAM, idPinjam);
+                                i.putExtra(ReadBookActivity.EXTRA_BOOK_IDPINJAM, idpinjambook);
                                 getContext().startActivity(i);
                             }
                             else {

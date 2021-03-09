@@ -78,6 +78,7 @@ public class MyBookFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        dataItemMyBooks.clear();
         showMyBook(id);
     }
 

@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.eperpusapp.Fragment.MyBookFragment;
@@ -61,6 +62,7 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_read_book);
 
         toolbar = findViewById(R.id.toolbar);
@@ -292,7 +294,7 @@ public class ReadBookActivity extends AppCompatActivity implements OnPageChangeL
                             if (msg.equals("1")) {
                                 Toast.makeText(ReadBookActivity.this, "Last Page Read: "+page, Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(ReadBookActivity.this, "Failed to Borrow Book", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ReadBookActivity.this, "Failed to Update Read Progress", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

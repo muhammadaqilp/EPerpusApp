@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -31,7 +32,12 @@ import com.example.eperpusapp.ReadBookActivity;
 import com.example.eperpusapp.Session.SessionManagement;
 import com.example.eperpusapp.databinding.ItemMybookBookBinding;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Handler;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,6 +49,8 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
     private List<DataItemMyBook> dataItems;
     private ProgressDialog dialog;
     SessionManagement sessionManagement;
+    String ts;
+    Long tsLong;
 
     public MyBookAdapter(List<DataItemMyBook> dataItems) {
         this.dataItems = dataItems;
@@ -76,8 +84,6 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
         int halaman = data.getProgressBaca();
         int progress = 100*halaman/jumlahHalaman;
 
-        Log.d("PROG", String.valueOf(progress));
-
         holder.binding.progressPercentage.setText(progress+"%");
         holder.binding.progressBar.setProgress(progress);
         holder.binding.tglKembali.setText(tgl);
@@ -86,13 +92,35 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
 
         holder.binding.bookImage.setOnClickListener(v -> readBook(data.getFileBuku(), data.getIdPinjam(), data.getProgressBaca()));
 
+        dialog = new ProgressDialog(mContext);
+        tsLong = System.currentTimeMillis()/1000;
+        ts = tsLong.toString();
         holder.binding.btnReturn.setOnClickListener(v -> {
-            dialog = new ProgressDialog(mContext);
-            Long tsLong = System.currentTimeMillis()/1000;
-            String ts = tsLong.toString();
+            tsLong = System.currentTimeMillis()/1000;
+            ts = tsLong.toString();
             returnBook(data.getIdBuku(), data.getIdPinjam(), ts, position);
         });
 
+        String rtn = separated[1]+"-"+separated[2]+"-"+separated[3]+" "+separated[4];
+        DateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+        Date date = null;
+        try {
+            date = formatter.parse(rtn);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Long a = Long.valueOf(date.getTime())/1000;
+        String timestampRtn = a.toString();
+        Log.d("STRINGCHCKNOW", ts);
+        Log.d("STRINGCHCK", timestampRtn);
+
+        int y = Integer.parseInt(ts);
+        int z = Integer.parseInt(timestampRtn);
+
+        if (y >= z){
+            returnBook(data.getIdBuku(), data.getIdPinjam(), timestampRtn, position);
+        }
+//        checkReturn(data.getIdBuku(), data.getIdPinjam(), timestampRtn, position);
     }
 
     private void returnBook(int idBuku, int idPinjam, String timestamp, int position) {
@@ -159,6 +187,35 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
                     }
                 });
     }
+
+//    private void checkReturn(int idBuku, int idPinjam, String timestamp, int position) {
+//        Thread thread = new Thread(){
+//            @Override
+//            public void run() {
+//                try {
+//                    while (!isInterrupted()){
+//                        Thread.sleep(1000);
+//                        ((AppCompatActivity) mContext).runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Long tsLong = System.currentTimeMillis()/1000;
+//                                String ts = tsLong.toString();
+//                                int a = Integer.parseInt(ts);
+//                                int b = Integer.parseInt(timestamp);
+//                                if (a >= b){
+//                                    returnBook(idBuku, idPinjam, timestamp, position);
+//                                }
+//                            }
+//                        });
+//                    }
+//                }
+//                catch (InterruptedException e){
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
+//        thread.start();
+//    }
 
     public void removeAt(int position) {
         dataItems.remove(position);
