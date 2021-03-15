@@ -15,8 +15,8 @@ public interface ApiCall {
 
     //http://192.168.1.30:5000/buku
 
-    @GET("buku")
-    Call<ResponseBuku> getCollectionList();
+    @GET("buku/{page}")
+    Call<ResponseBuku> getCollectionList(@Path("page") int page);
 
     @GET("detailbuku/{id}")
     Call<ResponseBuku> getCollectionDetail(@Path("id") int id);

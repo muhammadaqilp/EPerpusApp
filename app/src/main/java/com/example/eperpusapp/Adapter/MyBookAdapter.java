@@ -98,7 +98,7 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
         holder.binding.btnReturn.setOnClickListener(v -> {
             tsLong = System.currentTimeMillis()/1000;
             ts = tsLong.toString();
-            returnBook(data.getIdBuku(), data.getIdPinjam(), ts, position);
+            returnBook(data.getIdBuku(), data.getIdPinjam(), ts, position, 0);
         });
 
         String rtn = separated[1]+"-"+separated[2]+"-"+separated[3]+" "+separated[4];
@@ -118,17 +118,21 @@ public class MyBookAdapter extends RecyclerView.Adapter<MyBookAdapter.ViewHolder
         int z = Integer.parseInt(timestampRtn);
 
         if (y >= z){
-            returnBook(data.getIdBuku(), data.getIdPinjam(), timestampRtn, position);
+            returnBook(data.getIdBuku(), data.getIdPinjam(), timestampRtn, position, 1);
         }
 //        checkReturn(data.getIdBuku(), data.getIdPinjam(), timestampRtn, position);
     }
 
-    private void returnBook(int idBuku, int idPinjam, String timestamp, int position) {
+    private void returnBook(int idBuku, int idPinjam, String timestamp, int position, int id) {
         sessionManagement = new SessionManagement(mContext);
         int idUser = sessionManagement.getSession();
 
         dialog.setMessage("Return Book...");
         dialog.show();
+
+        if (id == 1){
+            dialog.dismiss();
+        }
 
         ApiService.apiCall().getResponseReturn(idUser, idBuku, idPinjam, timestamp)
                 .enqueue(new Callback<ResponseReturn>() {

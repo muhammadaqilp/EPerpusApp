@@ -5,10 +5,12 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
@@ -22,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,7 +63,10 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private CollectionBookAdapter adapter;
-    private ProgressBar progressBar;
+    private ProgressBar progressBar, progressBarPage;
+    private GridLayoutManager layoutManager;
+    private NestedScrollView nestedScrollView;
+    private ScrollView scrollView;
     ImageView imageViewProfile, imageBanner;
     List<DataItemBuku> dataItemList;
     RecyclerView rvCollection;
@@ -76,6 +82,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public static final String EXTRA_USER_HOME = "extra_user_home";
     SearchView searchView;
 
+    //variables for pagination
+    private int page_number = 1;
+//    private int item_count = 10;
+
+    private boolean isLoading = true;
+    private int pastVisibleItems, visibleItemCount, totalItemCount, previous_total = 0;
+    private int view_threshold = 2;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,6 +98,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -92,6 +107,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         imageViewProfile = view.findViewById(R.id.profile_image);
         imageBanner = view.findViewById(R.id.img_banner);
         progressBar = view.findViewById(R.id.progressBar);
+        progressBarPage = view.findViewById(R.id.progressBarPage);
+        nestedScrollView = view.findViewById(R.id.nested);
+//        scrollView = view.findViewById(R.id.scroll);
         seeAll = view.findViewById(R.id.seeAll);
         name1 = view.findViewById(R.id.qw1);
         cat1 = view.findViewById(R.id.c1);
@@ -107,6 +125,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
         sessionManagement = new SessionManagement(getContext());
+        layoutManager = new GridLayoutManager(getContext(), 2);
 
         Glide.with(this)
                 .load("http://tulis.uinjkt.ac.id/img/slide/slide1.png")
@@ -123,12 +142,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             hideSoftKeyboard(getActivity());
             return false;
         });
-
-//        s.setOnFocusChangeListener((v, hasFocus) -> {
-//            if (hasFocus) {
-//                hideSoftKeyboard(getActivity());
-//            }
-//        });
 
         searchView.clearFocus();
 
@@ -163,28 +176,98 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         rvCollection.setNestedScrollingEnabled(false);
         dataItemList = new ArrayList<>();
 
-        showBookList();
+        showBookList(page_number);
+        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()){
+                page_number++;
+                progressBarPage.setVisibility(View.VISIBLE);
+                showBookList(page_number);
+            }
+        });
+
+//
+//        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+//
+//            if (scrollY > oldScrollY) {
+//                Log.i("AAAA", "Scroll DOWN");
+//            }
+//            if (scrollY < oldScrollY) {
+//                Log.i("AAAA", "Scroll UP");
+//            }
+//
+//            if (scrollY == 0) {
+//                Log.i("AAAA", "TOP SCROLL");
+//            }
+//
+//            if (scrollY == ( v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() )) {
+//                Log.i("AAAA", "BOTTOM SCROLL");
+//                // here where the trick is going
+//                if (isLoading){
+//                    page_number++;
+//                    progressBarPage.setVisibility(View.VISIBLE);
+//                    showBookList(page_number);
+//                    // calling from adapter addToExistingList(list)
+//                    // with the defined Adapter instance
+//
+//                    // reset the boolean(loading) to prevent
+//                    // auto loading data from APi
+//                    isLoading = false;
+//                }
+//            }
+//        });
+//        rvCollection.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                visibleItemCount = layoutManager.getChildCount();
+//                totalItemCount = layoutManager.getItemCount();
+//                pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+//
+//                Log.d("AAAAA", String.valueOf(visibleItemCount));
+//                Log.d("AAAAA", String.valueOf(totalItemCount));
+//                Log.d("AAAAA", String.valueOf(pastVisibleItems));
+//                Log.d("AAAAA", String.valueOf(dy));
+//
+//                if (dy > 0){
+//                    if (isLoading){
+//                        if (totalItemCount > previous_total){
+//                            isLoading = false;
+//                            previous_total = totalItemCount;
+//                        }
+//                    }
+//
+//                    if (!isLoading && (totalItemCount - visibleItemCount) <= (pastVisibleItems + view_threshold)){
+//                        page_number++;
+//                        showBookList(page_number);
+//                        isLoading = true;
+//                    }
+//                }
+//            }
+//        });
+//        showBookList();
         readingList(sessionManagement.getSession());
         mybookList(sessionManagement.getSession());
     }
 
-    private void showBookList() {
+    private void showBookList(int page) {
         progressBar.setVisibility(View.VISIBLE);
-        ApiService.apiCall().getCollectionList()
+        ApiService.apiCall().getCollectionList(page)
                 .enqueue(new Callback<ResponseBuku>() {
                     @Override
                     public void onResponse(Call<ResponseBuku> call, retrofit2.Response<ResponseBuku> response) {
                         if (response.isSuccessful()) {
                             progressBar.setVisibility(View.GONE);
+                            progressBarPage.setVisibility(View.GONE);
                             List<DataItemBuku> dataItemss = response.body().getData();
                             for (DataItemBuku dataItems : dataItemss) {
                                 dataItemList.add(dataItems);
-                                Collections.shuffle(dataItemList);
+//                                Collections.shuffle(dataItemList);
                                 adapter = new CollectionBookAdapter(dataItemList);
-                                adapter.notifyItemInserted(dataItemList.lastIndexOf(dataItemList));
+//                                adapter.notifyItemInserted(dataItemList.lastIndexOf(dataItemList));
 
                                 rvCollection.setHasFixedSize(true);
-                                rvCollection.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                                rvCollection.setLayoutManager(layoutManager);
                                 rvCollection.setAdapter(adapter);
                             }
                         }
