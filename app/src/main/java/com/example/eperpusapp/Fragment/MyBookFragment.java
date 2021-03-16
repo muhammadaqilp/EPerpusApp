@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class MyBookFragment extends Fragment {
 
     private MyBookAdapter adapter;
     private RecyclerView rvMyBook;
+    private ImageView imageEmpty;
     List<DataItemMyBook> dataItemMyBooks;
     private ProgressBar progressCircle;
     private HashMap<Integer, Integer> hashMapRead = new HashMap<>();
@@ -72,6 +74,7 @@ public class MyBookFragment extends Fragment {
         progressCircle = view.findViewById(R.id.progressCircle);
         rvMyBook = view.findViewById(R.id.rv_mybook);
         dataItemMyBooks = new ArrayList<>();
+        imageEmpty = view.findViewById(R.id.empty_wishlist);
     }
 
     @Override
@@ -93,6 +96,8 @@ public class MyBookFragment extends Fragment {
                             List<DataItemMyBook> a = response.body().getData();
                             if (a.isEmpty()) {
                                 saveToMyRead(null);
+                                rvMyBook.setVisibility(View.GONE);
+                                imageEmpty.setVisibility(View.VISIBLE);
                             } else {
                                 for (DataItemMyBook data : a) {
                                     dataItemMyBooks.add(data);

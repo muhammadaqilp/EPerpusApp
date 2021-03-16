@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class HistoryFragment extends Fragment {
 
     private RecyclerView rvHistory;
     private HistoryBookAdapter adapter;
+    private ImageView imageEmpty;
     List<DataItemHistory> dataItemHistory;
     private ProgressBar progressBar;
     private int idUser;
@@ -60,6 +62,7 @@ public class HistoryFragment extends Fragment {
         sessionManagement = new SessionManagement(getContext());
         idUser = sessionManagement.getSession();
         progressBar = view.findViewById(R.id.progressCircle);
+        imageEmpty = view.findViewById(R.id.empty_wishlist);
         rvHistory = view.findViewById(R.id.rv_history);
         dataItemHistory = new ArrayList<>();
         showBookHistory(idUser);
@@ -75,18 +78,24 @@ public class HistoryFragment extends Fragment {
                         if (response.isSuccessful()) {
                             progressBar.setVisibility(View.GONE);
                             List<DataItemHistory> history = response.body().getData();
-                            for (DataItemHistory his : history) {
-                                dataItemHistory.add(his);
+                            if (history.isEmpty()) {
+                                saveToMy(null);
+                                rvHistory.setVisibility(View.GONE);
+                                imageEmpty.setVisibility(View.VISIBLE);
+                            } else {
+                                for (DataItemHistory his : history) {
+                                    dataItemHistory.add(his);
 
-                                adapter = new HistoryBookAdapter(dataItemHistory);
-                                adapter.notifyItemInserted(dataItemHistory.lastIndexOf(dataItemHistory));
+                                    adapter = new HistoryBookAdapter(dataItemHistory);
+                                    adapter.notifyItemInserted(dataItemHistory.lastIndexOf(dataItemHistory));
 
-                                rvHistory.setHasFixedSize(true);
-                                LinearLayoutManager lm = new LinearLayoutManager(getContext());
-                                lm.setReverseLayout(true);
-                                lm.setStackFromEnd(true);
-                                rvHistory.setLayoutManager(lm);
-                                rvHistory.setAdapter(adapter);
+                                    rvHistory.setHasFixedSize(true);
+                                    LinearLayoutManager lm = new LinearLayoutManager(getContext());
+                                    lm.setReverseLayout(true);
+                                    lm.setStackFromEnd(true);
+                                    rvHistory.setLayoutManager(lm);
+                                    rvHistory.setAdapter(adapter);
+                                }
                             }
                         }
 
