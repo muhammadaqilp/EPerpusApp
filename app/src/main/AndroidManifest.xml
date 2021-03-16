@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPerpusApp">
-        <activity android:name=".CategoryActivity"></activity>
+        <activity android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".CategoryActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".Layout.DialogNoInternet" />
         <activity android:name=".Layout.DialogConfirmation" />
@@ -25,8 +27,8 @@
         <activity android:name=".BookDetailActivity" />
         <activity android:name=".ProfileActivity" />
         <activity
-            android:name=".LoginActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:name=".SplashActivity"
+            android:theme="@style/SplashScreenStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
