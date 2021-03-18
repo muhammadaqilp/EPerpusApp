@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="8dp"
     android:gravity="bottom"
-    android:background="@drawable/backgroundlogin"
+    android:background="@drawable/bgloginfix"
     android:fitsSystemWindows="true"
     tools:context=".LoginActivity">
 
