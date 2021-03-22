@@ -53,7 +53,13 @@ public class HistoryBookAdapter extends RecyclerView.Adapter<HistoryBookAdapter.
         holder.binding.bookAuthors.setMaxLines(1);
         holder.binding.bookAuthors.setText(data.getPengarang());
         holder.binding.progressPercentage.setText(data.getProgressBaca()+"%");
-        holder.binding.progressBar.setProgress(data.getProgressBaca());
+
+        int jumlahHalaman = data.getJumlahHalaman();
+        int halaman = data.getProgressBaca();
+        int progress = 100*halaman/jumlahHalaman;
+
+        holder.binding.progressPercentage.setText(progress+"%");
+        holder.binding.progressBar.setProgress(progress);
 
         Glide.with(mContext)
                 .load(data.getFotoBuku())

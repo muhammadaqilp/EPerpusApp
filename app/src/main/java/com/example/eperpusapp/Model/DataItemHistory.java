@@ -19,6 +19,9 @@ public class DataItemHistory {
 	@SerializedName("idriwayat_pinjam")
 	private int idriwayatPinjam;
 
+	@SerializedName("jumlah_halaman")
+	private int jumlahHalaman;
+
 	@SerializedName("judul_buku")
 	private String judulBuku;
 
@@ -46,6 +49,10 @@ public class DataItemHistory {
 
 	public int getIdriwayatPinjam(){
 		return idriwayatPinjam;
+	}
+
+	public int getJumlahHalaman() {
+		return jumlahHalaman;
 	}
 
 	public String getJudulBuku(){
