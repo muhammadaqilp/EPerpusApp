@@ -12,16 +12,23 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.eperpusapp.Layout.DialogConfirmation;
 import com.example.eperpusapp.Layout.DialogNoInternet;
 import com.example.eperpusapp.Model.DataItemUser;
+import com.example.eperpusapp.Model.Login;
 import com.example.eperpusapp.Model.ResponseUser;
 import com.example.eperpusapp.Network.ApiService;
 import com.example.eperpusapp.Session.SessionManagement;
 import com.example.eperpusapp.databinding.ActivityLoginBinding;
+
+import java.security.MessageDigest;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog dialog;
     DataItemUser user;
     int userID;
+    private String AES = "AES";
+    Login login = new Login();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +106,42 @@ public class LoginActivity extends AppCompatActivity {
                     showAlert();
                 } else {
                     Log.d("SHOW ALERT", String.valueOf(checkConnection()));
-                    login(username, password);
+
+                    String a = "AQIL";
+                    String out;
+                    try {
+//                        out = encrypt(a, password);
+//                        Log.d("ENCRYPT", out);
+                        login.setUsername(username);
+                        login.setPassword(password);
+                        login(login);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     binding.btnLogin.setEnabled(true);
                 }
             }
         });
 
+    }
+
+    private String encrypt(String data, String password) throws Exception{
+        SecretKeySpec key = generateKey(password);
+        Cipher cipher = Cipher.getInstance(AES);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        byte[] encVal = cipher.doFinal(data.getBytes());
+        String encryptedValue = Base64.encodeToString(encVal, Base64.DEFAULT);
+
+        return encryptedValue;
+    }
+
+    private SecretKeySpec generateKey(String password) throws Exception{
+        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] bytes = password.getBytes("UTF-8");
+        digest.update(bytes, 0, bytes.length);
+        byte[] key = digest.digest();
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+        return secretKeySpec;
     }
 
     private void checkBtn() {
@@ -134,13 +173,15 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void login(String username, String password) {
+    public void login(Login login) {
         //1.login to app and save session user
         //2. move to mainactivity
 
         dialog.setMessage("Logging in...");
         dialog.show();
-        ApiService.apiCall().getUserDetail(username, password)
+        Log.d("SUBMIT", login.getUsername());
+        Log.d("SUBMIT", login.getPassword());
+        ApiService.apiCall().getUserDetail(login)
                 .enqueue(new Callback<ResponseUser>() {
                     @Override
                     public void onResponse(Call<ResponseUser> call, Response<ResponseUser> response) {
@@ -158,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
                                 moveToMain();
                             } else {
                                 dialog.dismiss();
-                                Toast.makeText(LoginActivity.this, "YA GAGAL", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, resp.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

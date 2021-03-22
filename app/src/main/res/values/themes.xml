@@ -55,7 +55,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/c1</item>
         <item name="colorPrimaryDark">@color/c1</item>
         <item name="colorAccent">@color/c1</item>

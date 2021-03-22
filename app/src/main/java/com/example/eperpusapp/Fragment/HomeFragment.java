@@ -251,7 +251,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showBookList(int page) {
-        progressBar.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
         ApiService.apiCall().getCollectionList(page)
                 .enqueue(new Callback<ResponseBuku>() {
                     @Override

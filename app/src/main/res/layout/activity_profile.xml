@@ -269,7 +269,7 @@
                     android:id="@+id/empty_wishlist"
                     android:layout_width="200dp"
                     android:layout_height="300dp"
-                    android:src="@drawable/emptylist"
+                    android:src="@drawable/emptybookmark"
                     android:layout_gravity="center"
                     android:visibility="gone"/>
 
