@@ -1,5 +1,6 @@
 package com.example.eperpusapp.Network;
 
+import com.example.eperpusapp.Model.Login;
 import com.example.eperpusapp.Model.ResponseBuku;
 import com.example.eperpusapp.Model.ResponseCategory;
 import com.example.eperpusapp.Model.ResponseHistory;
@@ -8,7 +9,9 @@ import com.example.eperpusapp.Model.ResponseReturn;
 import com.example.eperpusapp.Model.ResponseUser;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiCall {
@@ -21,8 +24,8 @@ public interface ApiCall {
     @GET("detailbuku/{id}")
     Call<ResponseBuku> getCollectionDetail(@Path("id") int id);
 
-    @GET("login/{username}/{password}")
-    Call<ResponseUser> getUserDetail(@Path("username") String username, @Path("password") String password);
+    @POST("login")
+    Call<ResponseUser> getUserDetail(@Body Login login);
 
     @GET("search/{keyword}")
     Call<ResponseBuku> getCollectionSearch(@Path("keyword") String keyword);
